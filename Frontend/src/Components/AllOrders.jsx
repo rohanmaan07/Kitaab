@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Loader } from "./Loader"; // Assuming you have a Loader component
+import { Loader } from "./Loader"; 
 
 function AllOrders() {
   const [orders, setOrders] = useState([]);
@@ -16,7 +16,7 @@ function AllOrders() {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `https://kitaabrohan-hnhk.onrender.com/api/v1/get-all-orders`,
+          `https://kitaabrohan.onrender.com/api/v1/get-all-orders`,
           { headers }
         );
         setOrders(response.data.data);
