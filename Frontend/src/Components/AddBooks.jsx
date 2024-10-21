@@ -1,18 +1,18 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Loader } from "./Loader"; // Importing the Loader component
+import { Loader } from "./Loader"; 
 
 function AddBook() {
   const [formData, setFormData] = useState({
     url: null,
-    tittle: "", // Change 'tittle' to 'title'
+    tittle: "", 
     author: "",
     price: "",
     description: "",
     language: "",
   });
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); 
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const headers = {
@@ -38,7 +38,7 @@ function AddBook() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true
+    setLoading(true); 
     const formDataToSend = new FormData();
     for (const key in formData) {
       formDataToSend.append(key, formData[key]);
@@ -46,7 +46,7 @@ function AddBook() {
 
     try {
       const response = await axios.post(
-        `https://kitaabrohan-hnhk.onrender.com/api/v1/addBook`,
+        `https://kitaabrohan.onrender.com/api/v1/addBook`,
         formDataToSend,
         { headers }
       );
@@ -59,7 +59,7 @@ function AddBook() {
         setError("An error occurred while adding the book. Please try again.");
       }
     } finally {
-      setLoading(false); // Set loading back to false
+      setLoading(false); 
     }
   };
 
