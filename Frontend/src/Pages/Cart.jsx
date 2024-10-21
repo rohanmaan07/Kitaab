@@ -15,7 +15,7 @@ function Cart() {
   const handleRemoveFromCart = async (bookId) => {
     try {
       const response = await axios.put(
-        `https://kitaabrohan-hnhk.onrender.com/api/v1/removeFromCart/${bookId}`,
+        `https://kitaabrohan.onrender.com/api/v1/removeFromCart/${bookId}`,
         {},
         { headers }
       );
@@ -29,7 +29,7 @@ function Cart() {
   const fetchCartBooks = async () => {
     try {
       const response = await axios.get(
-        `https://kitaabrohan-hnhk.onrender.com/api/v1/getUserCart`,
+        `https://kitaabrohan.onrender.com/api/v1/getUserCart`,
         { headers }
       );
       setCartBooks(response.data.data);
@@ -55,7 +55,7 @@ function Cart() {
 
     try {
       const response = await axios.post(
-        `https://kitaabrohan-hnhk.onrender.com/api/v1/placeOrder`,
+        `https://kitaabrohan.onrender.com/api/v1/placeOrder`,
         { order: cartBooks },
         { headers }
       );
