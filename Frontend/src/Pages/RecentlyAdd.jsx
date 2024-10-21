@@ -12,7 +12,7 @@ function RecentlyAdd() {
     const fetchBooks = async () => {
       try {
         const response = await axios.get(
-          `https://kitaabrohan-hnhk.onrender.com/api/v1/getAllBookRecently`
+          `https://kitaabrohan.onrender.com/api/v1/getAllBookRecently`
         );
         setData(response.data.data);
         console.log(response.data.data);
@@ -20,7 +20,7 @@ function RecentlyAdd() {
         console.error("Error fetching recently added books:", error.message);
         setError("Failed to fetch books. Please try again later.");
       } finally {
-        setLoading(false); // Stop loading once the data is fetched or an error occurs
+        setLoading(false); 
       }
     };
 
