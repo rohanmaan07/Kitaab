@@ -14,7 +14,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`https://kitaabrohan-hnhk.onrender.com/api/v1/userInfo`, { headers });
+        const response = await axios.get(`https://kitaabrohan.onrender.com/api/v1/userInfo`, { headers });
         setProfile(response.data);
       } catch (error) {
         console.error("Failed to fetch profile data:", error);
