@@ -22,7 +22,7 @@ function SignUp() {
   const handleSubmit = async (e) => { 
     e.preventDefault(); 
     try {
-      const response = await axios.post(`https://kitaabrohan-hnhk.onrender.com/api/v1/signup`, formData);
+      const response = await axios.post(`https://kitaabrohan.onrender.com/api/v1/signup`, formData);
       navigate("/login"); 
     } catch (error) {
       if (error.response && error.response.data) {
