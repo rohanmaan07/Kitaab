@@ -1,19 +1,16 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const uri = process.env.ATLAS_DB;
-
-async function main() {
+const connectDB = async () => {
   try {
-    await mongoose.connect(uri, {
+    await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      connectTimeoutMS: 30000, // Optional: Increase timeout for debugging
-      socketTimeoutMS: 45000,  // Optional: Increase socket timeout for long queries
     });
-    console.log("Connected to MongoDB!");
+    console.log("MongoDB connected successfully.");
   } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
+    console.error("Error connecting to MongoDB:", error.message);
+    process.exit(1); 
   }
-}
+};
 
-module.exports = main;
+connectDB();
