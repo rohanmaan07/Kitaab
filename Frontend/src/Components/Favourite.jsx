@@ -13,7 +13,7 @@ function Favourite() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await axios.get(`https://kitaabrohan-hnhk.onrender.com/api/v1/getFavouriteBooks`, { headers });
+        const response = await axios.get(`https://kitaabrohan.onrender.com/api/v1/getFavouriteBooks`, { headers });
         setFav(response.data.data);
       } catch (error) {
         console.error("Failed to fetch favourite books:", error);
