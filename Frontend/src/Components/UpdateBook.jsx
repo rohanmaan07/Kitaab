@@ -32,7 +32,7 @@ function UpdateBook() {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `https://kitaabrohan-hnhk.onrender.com/api/v1/updateBook`,
+        `https://kitaabrohan.onrender.com/api/v1/updateBook`,
         formData,
         { headers }
       );
@@ -51,9 +51,9 @@ function UpdateBook() {
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
-        const response = await axios.get(`https://kitaabrohan-hnhk.onrender.com/api/v1/getBookDetails/${id}`, { headers });
-        setFormData(response.data.data); // Set the fetched data to formData
-        console.log("Fetched Data:", response.data.data); // Log fetched data
+        const response = await axios.get(`https://kitaabrohan.onrender.com/api/v1/getBookDetails/${id}`, { headers });
+        setFormData(response.data.data); 
+        console.log("Fetched Data:", response.data.data); 
       } catch (error) {
         setError("Error fetching book details.");
       }
