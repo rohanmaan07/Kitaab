@@ -19,14 +19,14 @@ function ViewBooks() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(`https://kitaabrohan-hnhk.onrender.com/api/v1/getBookDetails/${id}`);
+        const response = await axios.get(`https://kitaabrohan.onrender.com/api/v1/getBookDetails/${id}`);
         setData(response.data.data);
         setIsFavorited(response.data.isFavorited);
         setIsInCart(response.data.isInCart);
       } catch (err) {
         setError("Error fetching book details");
       } finally {
-        setLoading(false); // Set loading to false after the data is fetched
+        setLoading(false); 
       }
     };
 
@@ -41,7 +41,7 @@ function ViewBooks() {
 
   const handleFav = async () => {
     try {
-      const response = await axios.put(`https://kitaabrohan-hnhk.onrender.com/api/v1/addBookFav`, {}, { headers });
+      const response = await axios.put(`https://kitaabrohan.onrender.com/api/v1/addBookFav`, {}, { headers });
       alert(response.data.message);
       setIsFavorited(!isFavorited);
     } catch (err) {
@@ -51,7 +51,7 @@ function ViewBooks() {
 
   const handleCart = async () => {
     try {
-      const response = await axios.put(`https://kitaabrohan-hnhk.onrender.com/api/v1/addToCart`, {}, { headers });
+      const response = await axios.put(`https://kitaabrohan.onrender.com/api/v1/addToCart`, {}, { headers });
       alert(response.data.message);
       setIsInCart(!isInCart);
     } catch (err) {
@@ -60,7 +60,7 @@ function ViewBooks() {
   };
 
   const deleteBook = async () => {
-    const response = await axios.delete(`https://kitaabrohan-hnhk.onrender.com/api/v1/deleteBook`, { headers });
+    const response = await axios.delete(`https://kitaabrohan.onrender.com/api/v1/deleteBook`, { headers });
     alert(response.data.message);
     navigate("/all-books");
   };
