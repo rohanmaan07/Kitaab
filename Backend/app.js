@@ -7,30 +7,30 @@ const Book = require("./Routes/book");
 const Fav = require("./Routes/fav");
 const Order = require("./Routes/order");
 const Cart = require("./Routes/cart");
-const connectDB = require("./Connections/conn"); // Ensure conn.js exports connectDB
+const main = require("./Connections/conn");
 require("dotenv").config();
 
 const _dirname = path.resolve();
 
-// Call the connectDB function to connect to MongoDB
-connectDB()
+// Connect to MongoDB
+main()
   .then(() => {
     console.log("MongoDB connected successfully..");
-
-    // Start the server only after a successful connection
-    app.listen(8080, () => {
-      console.log("Server is listening on port 8080..");
-    });
   })
   .catch((err) => {
     console.error("Error connecting to MongoDB:", err);
-    process.exit(1); // Exit the process if the connection fails
   });
 
+// Middleware
 app.use(express.json());
 
-// Middleware
-app.use(cors());
+// CORS configuration
+const allowedOrigins = ['https://kitaabrohan.onrender.com']; 
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true, 
+}));
 
 // Routes
 app.use("/api/v1", User);
@@ -39,10 +39,13 @@ app.use("/api/v1", Fav);
 app.use("/api/v1", Order);
 app.use("/api/v1", Cart);
 
-// Serve static files
+// Serve static files from the Frontend dist directory
 app.use(express.static(path.join(_dirname, "/Frontend/dist")));
-
-// Handle all other requests
 app.get('*', (_, res) => {
   res.sendFile(path.resolve(_dirname, "Frontend", "dist", "index.html"));
+});
+
+// Start server
+app.listen(8080, () => {
+  console.log("Server is listening on port 8080..");
 });
