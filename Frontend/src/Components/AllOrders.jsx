@@ -33,7 +33,7 @@ function AllOrders() {
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
       const response = await axios.put(
-      `https://kitaabrohan-hnhk.onrender.com/api/v1/update-status/${orderId}`,
+      `https://kitaabrohan.onrender.com/api/v1/update-status/${orderId}`,
         { status: newStatus },
         { headers }
       );
