@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Cart() {
   const [cartBooks, setCartBooks] = useState([]);
@@ -15,7 +16,7 @@ function Cart() {
   const handleRemoveFromCart = async (bookId) => {
     try {
       const response = await axios.put(
-        `https://kitaabrohan.onrender.com/api/v1/removeFromCart/${bookId}`,
+        `https://kitaabrohan-hnhk.onrender.com/api/v1/removeFromCart/${bookId}`,
         {},
         { headers }
       );
@@ -29,7 +30,7 @@ function Cart() {
   const fetchCartBooks = async () => {
     try {
       const response = await axios.get(
-        `https://kitaabrohan.onrender.com/api/v1/getUserCart`,
+        `https://kitaabrohan-hnhk.onrender.com/api/v1/getUserCart`,
         { headers }
       );
       setCartBooks(response.data.data);
@@ -45,33 +46,73 @@ function Cart() {
     setTotalAmount(total);
   };
 
-  const handlePlaceOrder = async () => {
-    if (cartBooks.length === 0) {
-      alert(
-        "Your cart is empty. Please add books to your cart before placing an order."
-      );
-      return;
-    }
-
+  const handlePayment = async () => {
     try {
-      const response = await axios.post(
-        `https://kitaabrohan.onrender.com/api/v1/placeOrder`,
-        { order: cartBooks },
-        { headers }
+      const res = await fetch(
+        `https://kitaabrohan-hnhk.onrender.com/api/payment/order`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ amount: totalAmount })
+        }
       );
 
-      alert(response.data.message);
-
-      // Clear cart in state
-      setCartBooks([]);
-      setTotalAmount(0);
-
-      navigate("/profile/orderHistory");
+      const data = await res.json();
+      console.log(data);
+      handlePaymentVerify(data.data);
     } catch (error) {
-      console.error("Error placing order:", error);
-      alert("Failed to place order. Please try again later.");
+      console.log("Error in payment initiation:", error);
     }
   };
+
+  const handlePaymentVerify = (data) => {
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: data.amount,
+      currency: data.currency,
+      name: "Devknus",
+      description: "Book Purchase",
+      order_id: data.id,
+      handler: async (response) => {
+        try {
+          const res = await fetch(
+            `https://kitaabrohan-hnhk.onrender.com/api/payment/verify`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            }
+          );
+
+          const verifyData = await res.json();
+
+          if (verifyData.message) {
+            toast.success(verifyData.message);
+            setCartBooks([]); // Clear the cart after successful payment
+            setTotalAmount(0);
+            navigate("/profile/orderHistory");
+          }
+        } catch (error) {
+          console.log("Error during payment verification:", error);
+        }
+      },
+      theme: {
+        color: "#5f63b8"
+      }
+    };
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  };
+
+
 
   useEffect(() => {
     fetchCartBooks();
@@ -129,7 +170,7 @@ function Cart() {
             Total Amount: ₹{totalAmount}
           </h2>
           <button
-            onClick={handlePlaceOrder}
+            onClick={handlePayment}
             className="bg-[#E50914] text-white px-4 py-2 rounded hover:bg-opacity-90 transition duration-300 mt-4 w-full"
           >
             Place Order
