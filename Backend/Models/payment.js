@@ -1,5 +1,5 @@
-import mongoose, { model } from 'mongoose';
-const { Schema } = mongoose;
+import mongoose from 'mongoose';
+const { Schema, model } = mongoose;
 
 const PaymentSchema = new Schema({
     razorpay_order_id: {
@@ -16,7 +16,8 @@ const PaymentSchema = new Schema({
     },
     date: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
 });
-export default model('payment', PaymentSchema);
+
+export default model('Payment', PaymentSchema);
