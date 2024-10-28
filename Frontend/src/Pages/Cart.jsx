@@ -16,7 +16,7 @@ function Cart() {
   const handleRemoveFromCart = async (bookId) => {
     try {
       const response = await axios.put(
-        `https://kitaabrohan-hnhk.onrender.com/api/v1/removeFromCart/${bookId}`,
+        `https://kitaabrohan.onrender.com/api/v1/removeFromCart/${bookId}`,
         {},
         { headers }
       );
@@ -30,7 +30,7 @@ function Cart() {
   const fetchCartBooks = async () => {
     try {
       const response = await axios.get(
-        `https://kitaabrohan-hnhk.onrender.com/api/v1/getUserCart`,
+        `https://kitaabrohan.onrender.com/api/v1/getUserCart`,
         { headers }
       );
       setCartBooks(response.data.data);
@@ -49,7 +49,7 @@ function Cart() {
   const handlePayment = async () => {
     try {
       const res = await fetch(
-        `https://kitaabrohan-hnhk.onrender.com/api/payment/order`,
+        `https://kitaabrohan.onrender.com/api/payment/order`,
         {
           method: "POST",
           headers: {
@@ -69,7 +69,7 @@ function Cart() {
 
   const handlePaymentVerify = (data) => {
     const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      key: "rzp_test_1XTzzNAKB6IQ6n",
       amount: data.amount,
       currency: data.currency,
       name: "Devknus",
@@ -78,7 +78,7 @@ function Cart() {
       handler: async (response) => {
         try {
           const res = await fetch(
-            `https://kitaabrohan-hnhk.onrender.com/api/payment/verify`,
+            `https://kitaabrohan.onrender.com/api/payment/verify`,
             {
               method: "POST",
               headers: {
@@ -136,11 +136,11 @@ function Cart() {
                 <img
                   className="w-full h-[40vh] object-fill rounded-t-lg"
                   src={book.url}
-                  alt={book.title}
+                  alt={book.tittle}
                 />
                 <div className="p-4 text-white">
                   <h2 className="text-lg font-semibold truncate hover:text-red-600">
-                    {book.title}
+                    {book.tittle}
                   </h2>
                   <p className="text-sm text-gray-400 mt-1 leading-snug">
                     By {book.author}
