@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Loader } from "../Components/Loader"; // Import your Loader component
+import { Loader } from "../Components/Loader";
 
 function Cart() {
   const [cartBooks, setCartBooks] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
-  const [loading, setLoading] = useState(true); // Set initial loading to true
+  const [loading, setLoading] = useState(true); 
   const navigate = useNavigate();
 
   const headers = {
@@ -30,20 +30,20 @@ function Cart() {
   };
 
   const fetchCartBooks = async () => {
-    setLoading(true); // Start loading when fetching cart books
+    setLoading(true); 
     try {
       const response = await axios.get(
         `https://kitaabrohan.onrender.com/api/v1/getUserCart`,
         { headers }
       );
       setCartBooks(response.data.data);
-      calculateTotal(response.data.data); // Calculate total on fetch
-      console.log("Fetched cart books:", response.data.data); // Debugging log
+      calculateTotal(response.data.data); 
+      console.log("Fetched cart books:", response.data.data); 
     } catch (error) {
       console.error("Error fetching cart books:", error);
-      toast.error("Error fetching cart: " + error.message); // Notify user on error
+      toast.error("Error fetching cart: " + error.message); 
     } finally {
-      setLoading(false); // End loading after fetching
+      setLoading(false); 
     }
   };
 
@@ -53,7 +53,7 @@ function Cart() {
   };
 
   const handlePayment = async () => {
-    setLoading(true); // Start loading for payment
+    setLoading(true); 
     try {
       const res = await fetch(
         `https://kitaabrohan.onrender.com/api/payment/order`,
@@ -75,7 +75,7 @@ function Cart() {
       console.log("Error in payment initiation:", error);
       toast.error("Payment initiation failed: " + error.message); // Notify user
     } finally {
-      setLoading(false); // End loading after payment attempt
+      setLoading(false); 
     }
   };
  const handlePlaceOrder = async () => {
@@ -88,7 +88,7 @@ function Cart() {
 
     try {
       const response = await axios.post(
-        `https://kitaabrohan-hnhk.onrender.com/api/v1/placeOrder`,
+        `https://kitaabrohan.onrender.com/api/v1/placeOrder`,
         { order: cartBooks },
         { headers }
       );
@@ -134,7 +134,7 @@ function Cart() {
 
           if (verifyData.message) {
             toast.success(verifyData.message);
-            setCartBooks([]); // Clear the cart after successful payment
+            setCartBooks([]); 
             setTotalAmount(0);
             navigate("/profile/orderHistory");
           }
@@ -156,8 +156,8 @@ function Cart() {
 
   return (
     <div className="container mx-auto p-5 h-auto">
-      {loading && <Loader />} {/* Show loader while loading */}
-      {!loading && cartBooks.length === 0 ? ( // Check loading state before displaying empty cart
+      {loading && <Loader />} 
+      {!loading && cartBooks.length === 0 ? (
         <div className="text-5xl font-semibold h-screen text-zinc-500 flex items-center justify-center w-full">
           Empty Cart..
         </div>
