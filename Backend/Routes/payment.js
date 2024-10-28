@@ -6,15 +6,15 @@ const Payment = require("../Models/payment"); // Assuming you have a Payment mod
 require("dotenv").config();
 
 // Check if Razorpay keys are set
-if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_SECRET) {
-    console.error("Razorpay key ID or secret is not set in the environment variables.");
-    process.exit(1);
-}
+// if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_SECRET) {
+//     console.error("Razorpay key ID or secret is not set in the environment variables.");
+//     process.exit(1);
+// }
 
 // Initialize Razorpay instance
 const razorpayInstance = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_SECRET,
+    key_id: "rzp_test_1XTzzNAKB6IQ6n",
+    key_secret: "pnZCdySzgRlYbcIPWfHr5Ean",
 });
 
 // ROUTE 1: Create Order API 
