@@ -5,6 +5,12 @@ const crypto = require("crypto");
 const Payment = require("../Models/payment"); // Assuming you have a Payment model defined
 require("dotenv").config();
 
+// Check if Razorpay keys are set
+if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_SECRET) {
+    console.error("Razorpay key ID or secret is not set in the environment variables.");
+    process.exit(1);
+}
+
 // Initialize Razorpay instance
 const razorpayInstance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -23,7 +29,7 @@ router.post("/order", async (req, res) => {
         const options = {
             amount: Number(amount) * 100,  // Convert amount to paise
             currency: "INR",
-            receipt: crypto.randomBytes(10).toString("hex"),
+            receipt: `receipt#${crypto.randomBytes(10).toString("hex")}`, // More descriptive receipt
         };
 
         // Create the order asynchronously
@@ -32,7 +38,7 @@ router.post("/order", async (req, res) => {
         res.status(200).json({ data: order });
     } catch (error) {
         console.error("Error creating Razorpay order:", error);
-        res.status(500).json({ message: "Internal Server Error!" });
+        res.status(500).json({ message: "Failed to create order." });
     }
 });
 
@@ -68,7 +74,7 @@ router.post("/verify", async (req, res) => {
         }
     } catch (error) {
         console.error("Error during payment verification:", error);
-        res.status(500).json({ message: "Internal Server Error!" });
+        res.status(500).json({ message: "Failed to verify payment." });
     }
 });
 
