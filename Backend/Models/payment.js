@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const PaymentSchema = new Schema({
     razorpay_order_id: {
@@ -20,4 +20,4 @@ const PaymentSchema = new Schema({
     },
 });
 
-export default model('Payment', PaymentSchema);
+module.exports = mongoose.model("Payment", PaymentSchema);
