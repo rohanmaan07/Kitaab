@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Loader } from "../Components/Loader"; // Import your Loader component
 
 function Cart() {
   const [cartBooks, setCartBooks] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate();
 
   const headers = {
@@ -47,6 +49,7 @@ function Cart() {
   };
 
   const handlePayment = async () => {
+    setLoading(true); // Start loading
     try {
       const res = await fetch(
         `https://kitaabrohan.onrender.com/api/payment/order`,
@@ -60,10 +63,15 @@ function Cart() {
       );
 
       const data = await res.json();
-      console.log(data);
+      if (!res.ok) {
+        throw new Error(data.message || "Payment initiation failed");
+      }
       handlePaymentVerify(data.data);
     } catch (error) {
       console.log("Error in payment initiation:", error);
+      toast.error("Payment initiation failed: " + error.message); // Notify user
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
@@ -112,15 +120,13 @@ function Cart() {
     rzp1.open();
   };
 
-
-
   useEffect(() => {
     fetchCartBooks();
   }, []);
 
   return (
     <div className="container mx-auto p-5 h-auto">
-     
+      {loading && <Loader />} {/* Show loader while loading */}
       {cartBooks.length === 0 ? (
         <div className="text-5xl font-semibold h-screen text-zinc-500 flex items-center justify-center w-full">
           Empty Cart..
