@@ -7,7 +7,7 @@ import { Loader } from "../Components/Loader"; // Import your Loader component
 function Cart() {
   const [cartBooks, setCartBooks] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(true); // Set initial loading to true
   const navigate = useNavigate();
 
   const headers = {
@@ -30,6 +30,7 @@ function Cart() {
   };
 
   const fetchCartBooks = async () => {
+    setLoading(true); // Start loading when fetching cart books
     try {
       const response = await axios.get(
         `https://kitaabrohan.onrender.com/api/v1/getUserCart`,
@@ -40,6 +41,9 @@ function Cart() {
       console.log("Fetched cart books:", response.data.data); // Debugging log
     } catch (error) {
       console.error("Error fetching cart books:", error);
+      toast.error("Error fetching cart: " + error.message); // Notify user on error
+    } finally {
+      setLoading(false); // End loading after fetching
     }
   };
 
@@ -49,7 +53,7 @@ function Cart() {
   };
 
   const handlePayment = async () => {
-    setLoading(true); // Start loading
+    setLoading(true); // Start loading for payment
     try {
       const res = await fetch(
         `https://kitaabrohan.onrender.com/api/payment/order`,
@@ -71,10 +75,36 @@ function Cart() {
       console.log("Error in payment initiation:", error);
       toast.error("Payment initiation failed: " + error.message); // Notify user
     } finally {
-      setLoading(false); // End loading
+      setLoading(false); // End loading after payment attempt
     }
   };
+ const handlePlaceOrder = async () => {
+    if (cartBooks.length === 0) {
+      alert(
+        "Your cart is empty. Please add books to your cart before placing an order."
+      );
+      return;
+    }
 
+    try {
+      const response = await axios.post(
+        `https://kitaabrohan-hnhk.onrender.com/api/v1/placeOrder`,
+        { order: cartBooks },
+        { headers }
+      );
+
+      alert(response.data.message);
+
+      // Clear cart in state
+      setCartBooks([]);
+      setTotalAmount(0);
+
+      navigate("/profile/orderHistory");
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Failed to place order. Please try again later.");
+    }
+  };
   const handlePaymentVerify = (data) => {
     const options = {
       key: "rzp_test_1XTzzNAKB6IQ6n",
@@ -127,7 +157,7 @@ function Cart() {
   return (
     <div className="container mx-auto p-5 h-auto">
       {loading && <Loader />} {/* Show loader while loading */}
-      {cartBooks.length === 0 ? (
+      {!loading && cartBooks.length === 0 ? ( // Check loading state before displaying empty cart
         <div className="text-5xl font-semibold h-screen text-zinc-500 flex items-center justify-center w-full">
           Empty Cart..
         </div>
@@ -176,7 +206,7 @@ function Cart() {
             Total Amount: ₹{totalAmount}
           </h2>
           <button
-            onClick={handlePayment}
+            onClick={handlePlaceOrder}
             className="bg-[#E50914] text-white px-4 py-2 rounded hover:bg-opacity-90 transition duration-300 mt-4 w-full"
           >
             Place Order
