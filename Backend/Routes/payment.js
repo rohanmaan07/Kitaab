@@ -18,7 +18,7 @@ const razorpayInstance = new Razorpay({
 });
 
 // ROUTE 1: Create Order API 
-router.post("/order", async (req, res) => {
+router.post("/payment/order", async (req, res) => {
     const { amount } = req.body;
 
     if (!amount) {
@@ -35,6 +35,11 @@ router.post("/order", async (req, res) => {
         // Create the order asynchronously
         const order = await razorpayInstance.orders.create(options);
         console.log("Order created successfully:", order);
+        
+        // Optionally save order to database
+        // const payment = new Payment({ /* order details here */ });
+        // await payment.save();
+
         res.status(200).json({ data: order });
     } catch (error) {
         console.error("Error creating Razorpay order:", error);
@@ -42,8 +47,9 @@ router.post("/order", async (req, res) => {
     }
 });
 
+
 // ROUTE 2: Verify Payment Signature
-router.post("/verify", async (req, res) => {
+router.post("/payment/verify", async (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -65,6 +71,8 @@ router.post("/verify", async (req, res) => {
                 razorpay_payment_id,
                 razorpay_signature,
             });
+
+            // Optionally, add more fields like payment status, timestamp, etc.
             await payment.save();
 
             return res.json({ message: "Payment Successfully Verified" });
