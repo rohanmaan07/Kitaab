@@ -53,43 +53,48 @@ function Cart() {
   };
 
 const handlePayment = async (amount) => {
-    setLoading(true); 
-  
-    try {
-      const { data: { data: order } } = await axios.post("https://kitaabrohan.onrender.com/api/v1/order", { amount });
-  
-      const options = {
-        key: "rzp_test_1XTzzNAKB6IQ6n",
-        amount: order.amount,
-        currency: "INR",
-        name: "6 Pack Programmer",
-        description: "Tutorial of RazorPay",
-        image: "https://avatars.githubusercontent.com/u/25058652?v=4",
-        order_id: order.id,
-        callback_url: "https://kitaabrohan.onrender.com/api/v1/verify",
-        prefill: {
-          name: "ROhan MAndal",
-          email: "rohanmandal@example.com",
-          contact: "9999999999"
-        },
-        notes: {
-          "address": "Razorpay Corporate Office"
-        },
-        theme: {
-          color: "#121212"
-        }
-      };
-      
-      const razor = new window.Razorpay(options);
-      razor.open();
-    } catch (error) {
-      console.error("Payment initiation failed:", error);
-      alert("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  
+  setLoading(true);
+
+  try {
+    // Ensure the amount is a number, or pass it directly
+    const paymentAmount = typeof amount === "number" ? amount : 100; // Replace 100 with your default amount if needed
+
+    const { data: { data: order } } = await axios.post("https://kitaabrohan-hnhk.onrender.com/api/v1/order", {
+      amount: paymentAmount
+    });
+
+    const options = {
+      key: "rzp_test_1XTzzNAKB6IQ6n",
+      amount: order.amount,
+      currency: "INR",
+      name: "6 Pack Programmer",
+      description: "Tutorial of RazorPay",
+      image: "https://avatars.githubusercontent.com/u/25058652?v=4",
+      order_id: order.id,
+      callback_url: "https://kitaabrohan-hnhk.onrender.com/api/v1/verify",
+      prefill: {
+        name: "ROhan MAndal",
+        email: "rohanmandal@example.com",
+        contact: "9999999999"
+      },
+      notes: {
+        "address": "Razorpay Corporate Office"
+      },
+      theme: {
+        color: "#121212"
+      }
+    };
+
+    const razor = new window.Razorpay(options);
+    razor.open();
+  } catch (error) {
+    console.error("Payment initiation failed:", error);
+    alert("Something went wrong. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
  const handlePlaceOrder = async () => {
     if (cartBooks.length === 0) {
       alert(
