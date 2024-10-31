@@ -59,7 +59,7 @@ const handlePayment = async (amount) => {
     // Ensure the amount is a number, or pass it directly
     const paymentAmount = typeof amount === "number" ? amount : 100; // Replace 100 with your default amount if needed
 
-    const { data: { data: order } } = await axios.post("https://kitaabrohan-hnhk.onrender.com/api/v1/order", {
+    const { data: { data: order } } = await axios.post("https://kitaabrohan.onrender.com/api/v1/order", {
       amount: paymentAmount
     });
 
@@ -71,7 +71,7 @@ const handlePayment = async (amount) => {
       description: "Tutorial of RazorPay",
       image: "https://avatars.githubusercontent.com/u/25058652?v=4",
       order_id: order.id,
-      callback_url: "https://kitaabrohan-hnhk.onrender.com/api/v1/verify",
+      callback_url: "https://kitaabrohan.onrender.com/api/v1/verify",
       prefill: {
         name: "ROhan MAndal",
         email: "rohanmandal@example.com",
