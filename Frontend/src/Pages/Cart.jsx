@@ -52,62 +52,62 @@ function Cart() {
     setTotalAmount(total);
   };
 
-const handlePayment = async (amount) => {
-  setLoading(true);
+// const handlePayment = async (amount) => {
+//   setLoading(true);
 
-  try {
-    // Convert amount to smallest currency unit if it’s in INR (paisa)
-    const paymentAmount = typeof amount === "number" ? amount * 100 : 10000; // Default to 100 INR if amount is invalid
+//   try {
+//     // Convert amount to smallest currency unit if it’s in INR (paisa)
+//     const paymentAmount = typeof amount === "number" ? amount * 100 : 10000; // Default to 100 INR if amount is invalid
 
-    const response = await axios.post("https://kitaabrohan.onrender.com/api/v1/order", {
-      amount: paymentAmount
-    });
+//     const response = await axios.post("https://kitaabrohan.onrender.com/api/v1/order", {
+//       amount: paymentAmount
+//     });
 
-    // Ensure `order` is defined to avoid destructuring errors
-    const order = response?.data?.data;
-    if (!order) throw new Error("Order creation failed.");
+//     // Ensure `order` is defined to avoid destructuring errors
+//     const order = response?.data?.data;
+//     if (!order) throw new Error("Order creation failed.");
 
-    const options = {
-      key: "rzp_test_1XTzzNAKB6IQ6n",
-      amount: order.amount,
-      currency: "INR",
-      name: "Rohan Mandal",
-      description: "Tutorial of RazorPay",
-      order_id: order.id,
-      callback_url: "https://kitaabrohan.onrender.com/api/v1/verify",
-      prefill: {
-        name: "Rohan Mandal",
-        email: "rohanmandal@example.com",
-        contact: "9999999999"
-      },
-      notes: {
-        address: "Razorpay Corporate Office"
-      },
-      theme: {
-        color: "#121212"
-      }
-    };
+//     const options = {
+//       key: "rzp_test_1XTzzNAKB6IQ6n",
+//       amount: order.amount,
+//       currency: "INR",
+//       name: "Rohan Mandal",
+//       description: "Tutorial of RazorPay",
+//       order_id: order.id,
+//       callback_url: "https://kitaabrohan.onrender.com/api/v1/verify",
+//       prefill: {
+//         name: "Rohan Mandal",
+//         email: "rohanmandal@example.com",
+//         contact: "9999999999"
+//       },
+//       notes: {
+//         address: "Razorpay Corporate Office"
+//       },
+//       theme: {
+//         color: "#121212"
+//       }
+//     };
 
-    // Ensure Razorpay script is loaded
-    if (!window.Razorpay) throw new Error("Razorpay SDK not loaded");
+//     // Ensure Razorpay script is loaded
+//     if (!window.Razorpay) throw new Error("Razorpay SDK not loaded");
 
-    const razor = new window.Razorpay(options);
-    razor.open();
-  } catch (error) {
-    console.error("Payment initiation failed:", error);
+//     const razor = new window.Razorpay(options);
+//     razor.open();
+//   } catch (error) {
+//     console.error("Payment initiation failed:", error);
 
-    // Provide user-friendly error messages based on the error type
-    if (error.response) {
-      alert(`Error: ${error.response.data.message || "Unable to process payment. Please try again."}`);
-    } else if (error.message === "Razorpay SDK not loaded") {
-      alert("Razorpay SDK failed to load. Check your internet connection and try again.");
-    } else {
-      alert("Something went wrong. Please try again.");
-    }
-  } finally {
-    setLoading(false);
-  }
-};
+//     // Provide user-friendly error messages based on the error type
+//     if (error.response) {
+//       alert(`Error: ${error.response.data.message || "Unable to process payment. Please try again."}`);
+//     } else if (error.message === "Razorpay SDK not loaded") {
+//       alert("Razorpay SDK failed to load. Check your internet connection and try again.");
+//     } else {
+//       alert("Something went wrong. Please try again.");
+//     }
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 
  const handlePlaceOrder = async () => {
     if (cartBooks.length === 0) {
@@ -237,7 +237,7 @@ const handlePayment = async (amount) => {
             Total Amount: ₹{totalAmount}
           </h2>
           <button
-            onClick={handlePayment}
+            onClick={handlePlaceOrder}
             className="bg-[#E50914] text-white px-4 py-2 rounded hover:bg-opacity-90 transition duration-300 mt-4 w-full"
           >
             Place Order
