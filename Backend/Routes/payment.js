@@ -2,88 +2,60 @@ const express = require("express");
 const router = express.Router();
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-const Payment = require("../Models/payment"); // Assuming you have a Payment model defined
+const Payment = require("../Models/payment"); 
 require("dotenv").config();
-
-// Check if Razorpay keys are set
-// if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_SECRET) {
-//     console.error("Razorpay key ID or secret is not set in the environment variables.");
-//     process.exit(1);
-// }
 
 // Initialize Razorpay instance
 const razorpayInstance = new Razorpay({
-    key_id: "rzp_test_1XTzzNAKB6IQ6n",
-    key_secret: "pnZCdySzgRlYbcIPWfHr5Ean",
+  key_id: "rzp_test_1XTzzNAKB6IQ6n",
+  key_secret: "pnZCdySzgRlYbcIPWfHr5Ean",
 });
 
-// ROUTE 1: Create Order API 
-router.post("/payment/order", async (req, res) => {
-    const { amount } = req.body;
-
-    if (!amount) {
-        return res.status(400).json({ message: "Amount is required" });
-    }
-
-    try {
-        const options = {
-            amount: Number(amount) * 100,  // Convert amount to paise
-            currency: "INR",
-            receipt: `receipt#${crypto.randomBytes(10).toString("hex")}`, // More descriptive receipt
-        };
-
-        // Create the order asynchronously
-        const order = await razorpayInstance.orders.create(options);
-        console.log("Order created successfully:", order);
-        
-        // Optionally save order to database
-        // const payment = new Payment({ /* order details here */ });
-        // await payment.save();
-
-        res.status(200).json({ data: order });
-    } catch (error) {
-        console.error("Error creating Razorpay order:", error);
-        res.status(500).json({ message: "Failed to create order." });
-    }
+// ROUTE 1: Create Order API
+router.post("/order", async (req, res) => {
+  try {
+    const options = {
+      amount: Number(req.body.amount * 100), // Convert amount to paise
+      currency: "INR",
+    };
+    const order = await razorpayInstance.orders.create(options);
+    console.log("Order created successfully:", order);
+    res.status(200).json({ data: order });
+  } catch (error) {
+    console.error("Error creating Razorpay order:", error);
+    res.status(500).json({ message: "Internal Server Error!" });
+  }
 });
-
 
 // ROUTE 2: Verify Payment Signature
-router.post("/payment/verify", async (req, res) => {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+router.post("/verify", async (req, res) => {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
-    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-        return res.status(400).json({ message: "All payment details are required" });
-    }
+  const body = razorpay_order_id + "|" + razorpay_payment_id;
 
+  const expectedSignature = crypto
+    .createHmac("sha256", "pnZCdySzgRlYbcIPWfHr5Ean") // Fix typo here
+    .update(body.toString())
+    .digest("hex");
+
+  const isAuthentic = expectedSignature === razorpay_signature;
+
+  if (isAuthentic) {
     try {
-        // Generate expected signature
-        const sign = razorpay_order_id + "|" + razorpay_payment_id;
-        const expectedSign = crypto
-            .createHmac("sha256", process.env.RAZORPAY_SECRET)
-            .update(sign)
-            .digest("hex");
-
-        if (expectedSign === razorpay_signature) {
-            // Save the payment details to the database if signatures match
-            const payment = new Payment({
-                razorpay_order_id,
-                razorpay_payment_id,
-                razorpay_signature,
-            });
-
-            // Optionally, add more fields like payment status, timestamp, etc.
-            await payment.save();
-
-            return res.json({ message: "Payment Successfully Verified" });
-        } else {
-            // If signatures don't match
-            return res.status(400).json({ message: "Invalid Payment Signature" });
-        }
+      // Save payment details to the database
+      await Payment.create({
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+      });
+      res.status(200).json({ success: true, message: "Payment verified successfully!" });
     } catch (error) {
-        console.error("Error during payment verification:", error);
-        res.status(500).json({ message: "Failed to verify payment." });
+      console.error("Error saving payment to database:", error);
+      res.status(500).json({ message: "Error saving payment to database" });
     }
+  } else {
+    res.status(400).json({ success: false, message: "Invalid signature, verification failed!" });
+  }
 });
 
 module.exports = router;
