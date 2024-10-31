@@ -52,32 +52,44 @@ function Cart() {
     setTotalAmount(total);
   };
 
-  const handlePayment = async () => {
+const handlePayment = async (amount) => {
     setLoading(true); 
+  
     try {
-      const res = await fetch(
-        `https://kitaabrohan.onrender.com/api/payment/order`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ amount: totalAmount })
+      const { data: { data: order } } = await axios.post("https://kitaabrohan.onrender.com/api/v1/order", { amount });
+  
+      const options = {
+        key: "rzp_test_1XTzzNAKB6IQ6n",
+        amount: order.amount,
+        currency: "INR",
+        name: "6 Pack Programmer",
+        description: "Tutorial of RazorPay",
+        image: "https://avatars.githubusercontent.com/u/25058652?v=4",
+        order_id: order.id,
+        callback_url: "https://kitaabrohan.onrender.com/api/v1/verify",
+        prefill: {
+          name: "ROhan MAndal",
+          email: "rohanmandal@example.com",
+          contact: "9999999999"
+        },
+        notes: {
+          "address": "Razorpay Corporate Office"
+        },
+        theme: {
+          color: "#121212"
         }
-      );
-
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message || "Payment initiation failed");
-      }
-      handlePaymentVerify(data.data);
+      };
+      
+      const razor = new window.Razorpay(options);
+      razor.open();
     } catch (error) {
-      console.log("Error in payment initiation:", error);
-      toast.error("Payment initiation failed: " + error.message); // Notify user
+      console.error("Payment initiation failed:", error);
+      alert("Something went wrong. Please try again.");
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
+  
  const handlePlaceOrder = async () => {
     if (cartBooks.length === 0) {
       alert(
@@ -206,7 +218,7 @@ function Cart() {
             Total Amount: ₹{totalAmount}
           </h2>
           <button
-            onClick={handlePlaceOrder}
+            onClick={handlePayment}
             className="bg-[#E50914] text-white px-4 py-2 rounded hover:bg-opacity-90 transition duration-300 mt-4 w-full"
           >
             Place Order
