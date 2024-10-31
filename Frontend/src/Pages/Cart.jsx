@@ -56,40 +56,54 @@ const handlePayment = async (amount) => {
   setLoading(true);
 
   try {
-    // Ensure the amount is a number, or pass it directly
-    const paymentAmount = typeof amount === "number" ? amount : 100; // Replace 100 with your default amount if needed
+    // Convert amount to smallest currency unit if it’s in INR (paisa)
+    const paymentAmount = typeof amount === "number" ? amount * 100 : 10000; // Default to 100 INR if amount is invalid
 
-    const { data: { data: order } } = await axios.post("https://kitaabrohan.onrender.com/api/v1/order", {
+    const response = await axios.post("https://kitaabrohan.onrender.com/api/v1/order", {
       amount: paymentAmount
     });
+
+    // Ensure `order` is defined to avoid destructuring errors
+    const order = response?.data?.data;
+    if (!order) throw new Error("Order creation failed.");
 
     const options = {
       key: "rzp_test_1XTzzNAKB6IQ6n",
       amount: order.amount,
       currency: "INR",
-      name: "6 Pack Programmer",
+      name: "Rohan Mandal",
       description: "Tutorial of RazorPay",
-      image: "https://avatars.githubusercontent.com/u/25058652?v=4",
       order_id: order.id,
       callback_url: "https://kitaabrohan.onrender.com/api/v1/verify",
       prefill: {
-        name: "ROhan MAndal",
+        name: "Rohan Mandal",
         email: "rohanmandal@example.com",
         contact: "9999999999"
       },
       notes: {
-        "address": "Razorpay Corporate Office"
+        address: "Razorpay Corporate Office"
       },
       theme: {
         color: "#121212"
       }
     };
 
+    // Ensure Razorpay script is loaded
+    if (!window.Razorpay) throw new Error("Razorpay SDK not loaded");
+
     const razor = new window.Razorpay(options);
     razor.open();
   } catch (error) {
     console.error("Payment initiation failed:", error);
-    alert("Something went wrong. Please try again.");
+
+    // Provide user-friendly error messages based on the error type
+    if (error.response) {
+      alert(`Error: ${error.response.data.message || "Unable to process payment. Please try again."}`);
+    } else if (error.message === "Razorpay SDK not loaded") {
+      alert("Razorpay SDK failed to load. Check your internet connection and try again.");
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
   } finally {
     setLoading(false);
   }
