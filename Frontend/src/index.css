@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+svg {
+  height: 100px !important; /* height ko override karna */
+  width: auto !important;   /* width ko auto karna */
+}
