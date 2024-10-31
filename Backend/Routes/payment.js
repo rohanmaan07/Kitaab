@@ -2,10 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-const Payment = require("../Models/payment"); 
-require("dotenv").config();
+const Payment = require("../Models/payment");
 
-// Initialize Razorpay instance
+// Initialize Razorpay instance with provided key and secret
 const razorpayInstance = new Razorpay({
   key_id: "rzp_test_1XTzzNAKB6IQ6n",
   key_secret: "pnZCdySzgRlYbcIPWfHr5Ean",
@@ -14,10 +13,12 @@ const razorpayInstance = new Razorpay({
 // ROUTE 1: Create Order API
 router.post("/order", async (req, res) => {
   try {
+    const amountInPaise = Number(req.body.amount) * 100; // Convert amount to paise
     const options = {
-      amount: Number(req.body.amount * 100), // Convert amount to paise
+      amount: amountInPaise,
       currency: "INR",
     };
+
     const order = await razorpayInstance.orders.create(options);
     console.log("Order created successfully:", order);
     res.status(200).json({ data: order });
@@ -34,7 +35,7 @@ router.post("/verify", async (req, res) => {
   const body = razorpay_order_id + "|" + razorpay_payment_id;
 
   const expectedSignature = crypto
-    .createHmac("sha256", "pnZCdySzgRlYbcIPWfHr5Ean") // Fix typo here
+    .createHmac("sha256", "pnZCdySzgRlYbcIPWfHr5Ean") // Using provided key_secret
     .update(body.toString())
     .digest("hex");
 
@@ -54,6 +55,7 @@ router.post("/verify", async (req, res) => {
       res.status(500).json({ message: "Error saving payment to database" });
     }
   } else {
+    console.warn("Invalid signature detected");
     res.status(400).json({ success: false, message: "Invalid signature, verification failed!" });
   }
 });
