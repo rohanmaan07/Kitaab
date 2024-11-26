@@ -23,7 +23,13 @@ main()
     });
 
 // Middleware setup
-app.use(cors()); // Allow CORS for all routes
+app.use(cors({
+    origin: 'http://localhost:5173', // Replace with your frontend URL
+    credentials: true, // Allow cookies and authorization headers
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+}));
+
 app.use(express.json()); // To parse JSON bodies
 
 // Routes
