@@ -237,7 +237,7 @@ const handlePayment = async (amount) => {
             Total Amount: ₹{totalAmount}
           </h2>
           <button
-            onClick={handlePayment }
+            onClick={handlePlaceOrder }
             className="bg-[#E50914] text-white px-4 py-2 rounded hover:bg-opacity-90 transition duration-300 mt-4 w-full"
           >
             Place Order
