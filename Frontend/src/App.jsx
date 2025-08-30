@@ -18,6 +18,7 @@ import AddBooks from "./Components/AddBooks";
 import UpdateBook from "./Components/UpdateBook";
 import Shayar from "./Pages/Shayar";
 import FullShayari from "./Pages/FullShayari";
+import Upcoming from "./Components/Upcoming";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/updateBook/:id" element={<UpdateBook />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/upcoming" element={<Upcoming />} />
         <Route path="/profile" element={<Profile />}>
           <Route index element={role === "user" ? <Favourite /> : <AllOrders />} />
           {role === "admin" && <Route path="addBook" element={<AddBooks />} />}

@@ -11,6 +11,7 @@ function Navbar() {
   // Define links based on login state
   const links = isLoggedIn
     ? [
+        { title: "upcoming", link: "/upcoming" },
         { title: "Shayar", link: "/shayar" },
         { title: "All Books", link: "/all-books" },
         { title: "Cart", link: "/cart" },
