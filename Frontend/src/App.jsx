@@ -19,6 +19,7 @@ import UpdateBook from "./Components/UpdateBook";
 import Shayar from "./Pages/Shayar";
 import FullShayari from "./Pages/FullShayari";
 import Upcoming from "./Components/Upcoming";
+import AssistantBot from "./Components/AssistantBot";
 
 function App() {
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ function App() {
         </Route>
     
       </Routes>
+      <AssistantBot/>
       <Footer />
     </div>
   );
