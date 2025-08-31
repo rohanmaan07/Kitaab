@@ -8,6 +8,7 @@ const Fav = require("./Routes/fav");
 const Order = require("./Routes/order");
 const Cart = require("./Routes/cart");
 const Tweet=require("./Routes/tweet");
+const Bot = require("./Routes/bot"); 
 // const payment = require("./Routes/payment");
 const main = require("./Connections/conn");
 require("dotenv").config();
@@ -33,6 +34,7 @@ app.use("/api/v1", Fav);
 app.use("/api/v1", Order);
 app.use("/api/v1", Cart);
 app.use("/api/v1", Tweet);
+app.use("/api/v1", Bot); 
 // app.use("/api/v1", payment);
 
 // Serve static files from Frontend
