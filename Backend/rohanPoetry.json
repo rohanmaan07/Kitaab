@@ -1,0 +1,64 @@
+{
+  "poems": [
+    {
+      "id": 1,
+      "mood": "desire",
+      "content": "Ek nazm likhne ke liye mujhe aurat chahiye.. 🎀\nHubahu us shakhs jaisi surat chahiye.. 🫂\nNa koi shor ho, aur na koi dastak ho, 🌷\nUske saath khaali kamre mein fursat chahiye.. 👀\nChoodiyan to le aaya main uske khatir, 🌹\nLekin uski kalai pakadne ke liye himmat chahiye.. 🙈\nUske badan ko poore tareeke se taraashne ke liye, 🌙\nMujhe uski razaamandi aur lehze mein nazakat chahiye.. 🥀"
+    },
+    {
+      "id": 2,
+      "mood": "sadness",
+      "content": "Uski narazgi ka mai kya karu??? 💭\nSiwaay ehtraam ke mai kya karu?? 🌙\nMujhe to milna hai uss shaqs se, 🩷\nWoh mujhe dekhna nahi chahti toh mai kya karu?? 🎀\nUsko chahiye mujhse mohabbat 'rohannnn', 🤌🏻\nLekin mujhko jism ki latt lag chuki hai toh mai kya karu?? 🫀\nMeri aarzo hai ki woh aa jaaye wapas mere paas, 🍂\nLekin meri duaa qabool nahi hoti toh mai kya karu?? 🧿"
+    },
+    {
+      "id": 3,
+      "mood": "love",
+      "content": "Mohabbat kyaa hai? shayad \"wo\"..\nWo kyaa hai? mera khawab,\nKhawab kya hai? tript hona,\nTript kya hai? meri mohabbat,\nMohabbat kyaa hai? shayad \"wo\"..🥀\n\nWo kyaa hai? ik sukoon,\nSukoon kya hai? uski khamoshi,\nKhamoshi kyaa hai? Bss ek ehsaas,\nEhsaas kya hai? usse mohabbat,\nMohabbat kyaa hai? shayad \"wo\"..🤍"
+    },
+    {
+      "id": 4,
+      "mood": "heartbreak",
+      "content": "Hosh aaya toh laga, main haqeeqat mein hoon ya kisi khwaab mein pahunh chuka hoon.\nUse mandap mein le jaya ja raha hai, na jaane main kahaan pahunh chuka hoon.\nKisi anjaane ke haathon mein nariyal, aur uske kaampte hue haath,\nWoh dulhan ke kapdon mein hai, shayad main uski shaadi tak pahunh chuka hoon.\n\nAansu bahte gaye, rasmein poori hoti rahi aur raat bhi dhalne lagi,\nYeh sab apni aankhon se dekhkar, main mafloozi mein pahunh chuka hoon.\nAb toh uske maathay mein sindoor aur kalai mein kangan hai \"rohannnn\",\nChaar saalon ke intezaar mein, main dard ki qabr tak pahunh chuka hoon."
+    },
+    {
+      "id": 5,
+      "mood": "pain",
+      "content": "Bulanaa mujhko mai aungaa jarrur teri sagaai mein..\nMere dil ka kya hai mai fek dunga usko khaai mein..\nEk toh mere imtehaan, upar se tera janamdin,\nKaatkar lagaa de khanjar tu meri kalaai mein..\n\nPuchna usse kya tofa diya hai uske mehboob ne,\nKoi toh bola bass thi ek raat tere raqeeb ke rajaai mein..\nTune kya December December lagaa rakha hai rohannn,\nBass tu padhta jaa duaa uski bhalaayi mein.."
+    },
+    {
+      "id": 6,
+      "mood": "loneliness",
+      "content": "Mai aadhi raat ko pankhee ko dekhta rehta hoon...\nTu kyaa kr rhi hogi iss waqt bass yhi sochta rehta hoon...\nAb toh dhoop ki aas karenge log iss sard mausam mein,\nMai toh bagair kisi jism ko odhe sota rehta hoon...\n\nJaane de, usee jaane de apne zehan se \"rohannn\",\nAb toh tawaif ke saamne mai apni hawas naapta rehta hoon..\nTu itna bhi khwaar na ho ki log tere badan ko hi chahe,\nBass isi darr se mai tujhe harr galiyon mein dhoondhta rehta hoon..."
+    },
+    {
+      "id": 7,
+      "mood": "comfort",
+      "content": "Thakan jab jyada ho tumko to mere paas aakar, mere andar kho jaana..\nRote-rote jab haal kharab kar lo tum apna, mere shaane par aakar so jaana..\n\nIsiliye shayad tune bataya hi nahii dukh apna,\nPareshaan ho jab bhi tum mere gale, lagkar tum ro jaana..\n\nTumhaare naam ke saare sabdh jod rakhe hai \"rohannn\",\nIss gazal ke sbhi phla akshar tere naam se juda hai,\nPhir bhi naa maano toh kisi aur ke ho jaana.."
+    },
+    {
+      "id": 8,
+      "mood": "madness",
+      "content": "Tumse ishq karna mera intikhaab to nahin.. 🫀\nItna na padho mujhko main koi kitaab to nahin.. 🍂\nShab-o-roz woh mere paas mere saamne baithi rehti hai, 🤲🏻\nMain to nafsiyati hoon, kahin \"woh\" khwaab to nahin.. 🔪\n\nUske surkh hothon ka nasha tujhko kaise lag gaya \"rohannn\", 🥀\nMain to zehar pee raha tha koi sharaab to nahin.. 🥂"
+    },
+    {
+      "id": 9,
+      "mood": "obsession",
+      "content": "Jismani sukoon ko woh hamnawa samajh baithi hai, use maara jaaye.\nKai paagalon ko ishq ne thikaane lagaye hai jo na laga use maara jaaye.\n\nSuna hai usko shauk hai mehndi lagane ke,\nJiska naam hogi uski hatheli par, kaash woh maara jaaye.\n\nSaji hogi woh dulhan bankar apne nikaah ke liye,\nBhari baraat mein uske hone wala shauhar maara jaaye.\n\nUska manpasandida rang sufaid hai,\nKyon na yeh uska mustaqbil banaya jaaye, kaash woh maara jaaye.\n\nNazmein-ghazlein likhne ke bahaane na jaane kitni badduaayein dedi tumne \"rohannn\"\nChhodo saari baaton ko usse pehle yeh nafsiyati-kamzarf maara jaaye.."
+    },
+    {
+      "id": 10,
+      "mood": "betrayal",
+      "content": "Uski tasveer, tasveer nahi keemti amaanat hai, 🥀\nAgar gir jaaye toh uske zulfen toh qayamat hai,\n\nApni saheliyon ke saamne usne daawa kiya ki \"rohannnn\" jismon ka shaukeen hai,\nAur hum hai ki sabko bata rakha hai ki woh humaari aakhri chahat hai. 🫀\n\nUsne apne nikaah ke liye bhi mere hi dushman ko chuna,\nHumne bhi uske shaadi ka mahaul aisa banaya jaise koi iddat hai!!"
+    },
+    {
+      "id": 11,
+      "mood": "devotion",
+      "content": "Main uski aadatein apni aadaton mein daalna chahta hoon... 🫶🏻\nUsko darshan pasand hai to main bas usko sunna chahta hoon... 🧸\n\nKisi din woh mile aur mere paas baithe to bolun usse, 🫀\nKhwaabon mein nahin haqeeqat mein bhi tumse hi nikaah karna chahta hoon... 💍\n\nMere ikhtiyaar mein nahin tumhe bhool paana \"rohannnn\", 🤍\nWoh kisi ki utaran ho to bhi usi ko pehnna chahta hoon... 🥀"
+    },
+    {
+      "id": 12,
+      "mood": "bitterness",
+      "content": "Uski dhundhli yaadein yahi kahi padi hai kisi kone mein... 💭\nKya-kya dastavej lagte hai kisi ka hone mein.. 👀\n\nTum kya jaano \"rohannn\" ye ehd-e-wafa kya hota hai, 🥀\nBahut farq hai mohabbat aur tawaif ke saamne rone mein... 🫀\n\nJyada se jyada tera nikaah hoga kisi aur se, 💍\nLekin tum toh maahir ho gairo ke saath hum-bistar hone mein.. 🖤"
+    }
+  ]
+}
