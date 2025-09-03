@@ -25,6 +25,12 @@ async function chatWithBot(userMsg, id) {
         { text: `Rohan poetry style example: ${randomPoem}` }
       ],
     },
+    generationConfig: {
+      temperature: 0.9,  
+      topK: 40,
+      topP: 0.95,
+      maxOutputTokens: 512
+    }
   };
 
   try {
