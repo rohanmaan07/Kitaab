@@ -18,39 +18,35 @@ async function chatWithBot(userMsg, id) {
 
   const payload = {
     contents: history,
-    tools: [{ google_search: {} }],
+    tools: [{ googleSearch: {} }], 
     systemInstruction: {
+      role: "system",
       parts: [
         { text: systemPrompt },
-        { text: `Rohan poetry style example: ${randomPoem}` }
+        { text: `Rohan poetry style example: ${randomPoem}` },
       ],
     },
-    generationConfig: {
-      temperature: 0.9,  
-      topK: 40,
-      topP: 0.95,
-      maxOutputTokens: 512
-    }
   };
 
   try {
     const response = await axios.post(apiUrl, payload);
+
     const candidate = response.data.candidates?.[0];
-    if (!candidate) return "Maaf kijiye, main is waqt soch nahi paa raha hoon.";
-
-    const parts = candidate.content?.parts || [];
-    let botReply = "";
-
-    for (const part of parts) {
-      if (part.text) botReply += part.text + " ";
+    if (!candidate || !candidate.content) {
+      return "Maaf kijiye, main is waqt soch nahi paa raha hoon.";
     }
 
-    if (botReply.trim()) {
+    const botReply = candidate.content.parts
+      .map((part) => part.text || "")
+      .join(" ")
+      .trim();
+
+    if (botReply) {
       history.push({ role: "model", parts: [{ text: botReply }] });
       cache.set(id, history);
     }
 
-    return botReply.trim();
+    return botReply || "Maaf kijiye, main is waqt soch nahi paa raha hoon.";
   } catch (error) {
     console.error(
       "Error calling Gemini API:",
