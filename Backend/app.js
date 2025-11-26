@@ -7,8 +7,8 @@ const Book = require("./Routes/book");
 const Fav = require("./Routes/fav");
 const Order = require("./Routes/order");
 const Cart = require("./Routes/cart");
-const Tweet=require("./Routes/tweet");
-// const payment = require("./Routes/payment");
+const Tweet = require("./Routes/tweet");
+const Bot = require("./Routes/bot"); // 1. Naya bot route import karein
 const main = require("./Connections/conn");
 require("dotenv").config();
 
@@ -33,7 +33,7 @@ app.use("/api/v1", Fav);
 app.use("/api/v1", Order);
 app.use("/api/v1", Cart);
 app.use("/api/v1", Tweet);
-// app.use("/api/v1", payment);
+app.use("/api/v1", Bot); // 2. Naya bot route use karein
 
 // Serve static files from Frontend
 const frontendPath = path.join(_dirname, "Frontend", "dist");
@@ -49,7 +49,6 @@ app.use((err, req, res, next) => {
 });
 
 // Server listening
-
 app.listen(8080, () => {
     console.log(`Server is listening on port..`);
 });

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 
-// --- SVG Icons ---
+// --- SVG ICONS ---
 const BotIcon = ({ className = "w-9 h-9" }) => (
   <svg
     className={className}
@@ -17,28 +17,13 @@ const BotIcon = ({ className = "w-9 h-9" }) => (
 );
 
 const CloseIcon = ({ className = "w-6 h-6" }) => (
-  <svg
-    className={className}
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M6 18L18 6M6 6l12 12"
-    />
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
   </svg>
 );
 
 const SendIcon = ({ className = "w-6 h-6" }) => (
-  <svg
-    className={className}
-    fill="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
     <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
   </svg>
 );
@@ -51,7 +36,7 @@ const AssistantBot = () => {
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const chatBoxRef = useRef(null);
-  const sessionIdRef = useRef(Date.now().toString());
+  const sessionIdRef = useRef(Date.now().toString()); // Unique session
 
   useEffect(() => {
     if (chatBoxRef.current) {
@@ -61,22 +46,26 @@ const AssistantBot = () => {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!userInput.trim()) return;
+    const text = userInput.trim();
+    if (!text) return;
 
-    const userMessage = { sender: "user", text: userInput };
-    setMessages((prev) => [...prev, userMessage]);
-    const userQuery = userInput;
+    // Add user message instantly
+    setMessages((prev) => [...prev, { sender: "user", text }]);
     setUserInput("");
     setIsLoading(true);
 
     try {
       const res = await axios.post("https://kitaabrohan.onrender.com/api/v1/bot/chat", {
         id: sessionIdRef.current,
-        message: userQuery,
+        message: text,
       });
-      setMessages((prev) => [...prev, { sender: "bot", text: res.data.reply }]);
+
+      let reply = res.data.reply || "Maaf kijiye, main jawab nahi de paaya.";
+
+      setMessages((prev) => [...prev, { sender: "bot", text: reply }]);
     } catch (error) {
       console.error("Error communicating with bot:", error);
+
       setMessages((prev) => [
         ...prev,
         {
@@ -94,41 +83,31 @@ const AssistantBot = () => {
       {isOpen && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="w-full max-w-2xl h-[80vh] bg-[#16181C] rounded-2xl shadow-2xl flex flex-col border border-gray-700">
+            
+            {/* HEADER */}
             <div className="p-4 bg-[#202327] flex justify-between items-center border-b border-gray-700 rounded-t-2xl">
               <h3 className="font-bold text-white text-lg">Kitaab Assistant</h3>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-white transition"
-              >
+              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white transition">
                 <CloseIcon className="w-7 h-7" />
               </button>
             </div>
 
-            {/* Chat Messages */}
-
-            <div
-              ref={chatBoxRef}
-              className="flex-1 p-4 overflow-y-auto space-y-3 custom-scrollbar"
-            >
+            {/* CHAT WINDOW */}
+            <div ref={chatBoxRef} className="flex-1 p-4 overflow-y-auto space-y-3 custom-scrollbar">
               {messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`flex ${
-                    msg.sender === "bot" ? "justify-start" : "justify-end"
-                  }`}
-                >
+                <div key={index} className={`flex ${msg.sender === "bot" ? "justify-start" : "justify-end"}`}>
                   <div
                     className={`max-w-[80%] px-4 py-2 rounded-2xl text-sm shadow 
-        ${
-          msg.sender === "bot"
-            ? "bg-gray-700 text-white rounded-bl-none"
-            : "bg-[#E50914] text-white rounded-br-none"
-        }`}
+                      ${msg.sender === "bot"
+                        ? "bg-gray-700 text-white rounded-bl-none"
+                        : "bg-[#E50914] text-white rounded-br-none"
+                      }`}
                   >
                     {msg.text}
                   </div>
                 </div>
               ))}
+
               {isLoading && (
                 <div className="flex justify-start">
                   <div className="max-w-[80%] px-4 py-2 rounded-2xl text-white bg-gray-700 animate-pulse">
@@ -137,10 +116,9 @@ const AssistantBot = () => {
                 </div>
               )}
             </div>
-            <form
-              onSubmit={handleSendMessage}
-              className="p-4 border-t border-gray-700 bg-[#202327] rounded-b-2xl"
-            >
+
+            {/* INPUT BAR */}
+            <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-700 bg-[#202327] rounded-b-2xl">
               <div className="bg-[#16181C] rounded-full flex items-center px-3 py-2">
                 <input
                   type="text"
@@ -149,6 +127,7 @@ const AssistantBot = () => {
                   placeholder="Kuch puchiye..."
                   className="flex-1 bg-transparent focus:outline-none text-white placeholder-gray-400 text-sm"
                 />
+
                 <button
                   type="submit"
                   className="ml-2 p-2 rounded-full bg-[#E50914] hover:bg-red-700 text-white transition disabled:bg-gray-600 disabled:cursor-not-allowed"
@@ -158,9 +137,12 @@ const AssistantBot = () => {
                 </button>
               </div>
             </form>
+
           </div>
         </div>
       )}
+
+      {/* OPEN BUTTON */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}

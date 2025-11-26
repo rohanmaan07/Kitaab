@@ -5,32 +5,55 @@ const systemPrompt = require("./systemPrompt");
 const rohanPoetry = require("./rohanPoetry.json");
 
 async function chatWithBot(userMsg, id) {
-  let history = cache.get(id) || [];
-  history.push({ role: "user", parts: [{ text: userMsg }] });
-
-  const randomPoem =
-    rohanPoetry.poems[Math.floor(Math.random() * rohanPoetry.poems.length)].content;
-
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error("GEMINI_API_KEY is not set");
 
   const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
-  const payload = {
-    contents: history,
-    tools: [{ google_search: {} }],
-    systemInstruction: {
+  // Fetch existing chat history from cache
+  let history = cache.get(id) || [];
+
+  // Add the new user message
+  history.push({
+    role: "user",
+    parts: [{ text: userMsg }],
+  });
+
+  // Pick a random poem sample
+  const randomPoem =
+    rohanPoetry.poems[Math.floor(Math.random() * rohanPoetry.poems.length)].content;
+
+  // Combine system + poem + conversation history into a SINGLE structured message
+  const finalHistory = [
+    {
+      role: "user",
       parts: [
-        { text: systemPrompt },
-        { text: `Rohan poetry style example: ${randomPoem}` }
+        {
+          text: `${systemPrompt}
+
+Poetry Style Sample:
+${randomPoem}
+
+Here is the conversation so far:
+${history
+  .map((msg) => `${msg.role.toUpperCase()}: ${msg.parts[0].text}`)
+  .join("\n")}
+
+User: ${userMsg}`,
+        },
       ],
     },
+  ];
+
+  const payload = {
+    contents: finalHistory,
   };
 
   try {
     const response = await axios.post(apiUrl, payload);
+
     const candidate = response.data.candidates?.[0];
-    if (!candidate) return "Maaf kijiye, main is waqt soch nahi paa raha hoon.";
+    if (!candidate) return "Sorry, main is waqt reply generate nahi kar pa raha.";
 
     const parts = candidate.content?.parts || [];
     let botReply = "";
@@ -39,17 +62,24 @@ async function chatWithBot(userMsg, id) {
       if (part.text) botReply += part.text + " ";
     }
 
-    if (botReply.trim()) {
-      history.push({ role: "model", parts: [{ text: botReply }] });
+    botReply = botReply.trim();
+
+    if (botReply) {
+      history.push({
+        role: "model",
+        parts: [{ text: botReply }],
+      });
+
       cache.set(id, history);
     }
 
-    return botReply.trim();
+    return botReply;
   } catch (error) {
     console.error(
-      "Error calling Gemini API:",
-      error.response ? error.response.data : error.message
+      "Gemini API ERROR:",
+      error.response?.data || error.message
     );
+
     throw new Error("Something went wrong while communicating with the bot.");
   }
 }
