@@ -8,7 +8,8 @@ const Fav = require("./Routes/fav");
 const Order = require("./Routes/order");
 const Cart = require("./Routes/cart");
 const Tweet = require("./Routes/tweet");
-const Bot = require("./Routes/bot"); // 1. Naya bot route import karein
+const Bot = require("./Routes/bot");
+const Notification = require("./Routes/notification");
 const main = require("./Connections/conn");
 require("dotenv").config();
 
@@ -33,7 +34,8 @@ app.use("/api/v1", Fav);
 app.use("/api/v1", Order);
 app.use("/api/v1", Cart);
 app.use("/api/v1", Tweet);
-app.use("/api/v1", Bot); // 2. Naya bot route use karein
+app.use("/api/v1", Bot);
+app.use("/api/v1/notifications", Notification);
 
 // Serve static files from Frontend
 const frontendPath = path.join(_dirname, "Frontend", "dist");
