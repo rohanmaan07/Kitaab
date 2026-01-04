@@ -6,14 +6,14 @@ const Payment = require("../Models/payment");
 
 // Initialize Razorpay instance with provided key and secret
 const razorpayInstance = new Razorpay({
-  key_id: "rzp_test_1XTzzNAKB6IQ6n",
-  key_secret: "pnZCdySzgRlYbcIPWfHr5Ean",
+  key_id: "rzp_test_DUtdKeiVCIaufb",
+  key_secret: "4uxHird3lTujKdZyePCrWJa0",
 });
 
 // ROUTE 1: Create Order API
 router.post("/order", async (req, res) => {
   try {
-    const amountInPaise = Number(req.body.amount) * 100; // Convert amount to paise
+    const amountInPaise = Number(req.body.amount); // Amount already in paise from frontend
     const options = {
       amount: amountInPaise,
       currency: "INR",
@@ -36,7 +36,7 @@ router.post("/verify", async (req, res) => {
   const body = razorpay_order_id + "|" + razorpay_payment_id;
 
   const expectedSignature = crypto
-    .createHmac("sha256", "pnZCdySzgRlYbcIPWfHr5Ean") // Using provided key_secret
+    .createHmac("sha256", "4uxHird3lTujKdZyePCrWJa0")
     .update(body.toString())
     .digest("hex");
 

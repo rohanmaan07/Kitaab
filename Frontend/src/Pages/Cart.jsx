@@ -68,11 +68,11 @@ const handlePayment = async (amount) => {
     if (!order) throw new Error("Order creation failed.");
 
     const options = {
-      key: "rzp_test_1XTzzNAKB6IQ6n",
+      key: "rzp_test_DUtdKeiVCIaufb",
       amount: order.amount,
       currency: "INR",
-      name: "Rohan Mandal",
-      description: "Tutorial of RazorPay",
+      name: "Kitaab - Book Store",
+      description: "Book Purchase Payment",
       order_id: order.id,
       callback_url: "http://localhost:8080/api/v1/verify",
       prefill: {
