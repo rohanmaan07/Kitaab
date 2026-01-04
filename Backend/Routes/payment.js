@@ -17,14 +17,15 @@ router.post("/order", async (req, res) => {
     const options = {
       amount: amountInPaise,
       currency: "INR",
+      receipt: `receipt_${Date.now()}`,
     };
 
     const order = await razorpayInstance.orders.create(options);
     console.log("Order created successfully:", order);
-    res.status(200).json({ data: order });
+    res.status(200).json({ success: true, data: order });
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
-    res.status(500).json({ message: "Internal Server Error!" });
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
   }
 });
 
