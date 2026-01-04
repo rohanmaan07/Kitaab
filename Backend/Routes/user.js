@@ -3,11 +3,12 @@ const User = require("../Models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("./userAuth");
+const { createNotification } = require("./notification");
 
 //signup..
 router.post("/signup", async (req, res) => {
   try {
-    const { username, name, email, password } = req.body;
+    const { username, name, email, password, avatar } = req.body;
 
     if (username.length < 1) {
       return res
@@ -35,6 +36,7 @@ router.post("/signup", async (req, res) => {
       username,
       password: hashPass,
       email,
+      avatar: avatar || `https://ui-avatars.com/api/?name=${username}&background=E50914&color=fff&bold=true`,
     });
 
     await newUser.save();
@@ -51,7 +53,7 @@ router.post("/signin", async (req, res) => {
     const { username, password } = req.body;
     const existinguser = await User.findOne({ username: username });
     if (!existinguser) {
-      res.status(400).json({ message: "Invalid Cridentials.." });
+      return res.status(400).json({ message: "Invalid Credentials.." });
     }
 
     await bcrypt.compare(password, existinguser.password, (err, data) => {
@@ -65,9 +67,14 @@ router.post("/signin", async (req, res) => {
           id: existinguser._id,
           role: existinguser.role,
           token: token,
+          user: {
+            username: existinguser.username,
+            avatar: existinguser.avatar,
+            email: existinguser.email,
+          },
         });
       } else {
-        res.status(400).json({ message: "Invalid Cridentials.." });
+        res.status(400).json({ message: "Invalid Credentials.." });
       }
     });
   } catch (err) {
@@ -94,7 +101,7 @@ router.put("/bookmark/:id", authenticateToken, async (req, res) => {
     const loggedInUserId = req.body.id;
     const tweetId = req.params.id;
     const user = await User.findById(loggedInUserId);
-    
+
     if (user.bookmarks.includes(tweetId)) {
       // remove bookmark
       await User.findByIdAndUpdate(loggedInUserId, { $pull: { bookmarks: tweetId } });
@@ -108,6 +115,29 @@ router.put("/bookmark/:id", authenticateToken, async (req, res) => {
         message: "Saved to bookmarks."
       });
     }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+});
+
+// Get bookmarked tweets
+router.get("/bookmarked-tweets", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.headers;
+    const Tweet = require("../Models/tweet");
+    
+    const user = await User.findById(id);
+    
+    // Get all bookmarked tweets
+    const bookmarkedTweets = await Tweet.find({
+      _id: { $in: user.bookmarks }
+    }).sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      tweets: bookmarkedTweets,
+      success: true,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Server Error" });
@@ -157,6 +187,14 @@ router.post("/follow/:id", authenticateToken, async (req, res) => {
     if (!user.followers.includes(loggedInUserId)) {
       await user.updateOne({ $push: { followers: loggedInUserId } });
       await loggedInUser.updateOne({ $push: { following: userId } });
+      
+      // Create notification
+      await createNotification(
+        userId,
+        loggedInUserId,
+        "follow",
+        `${loggedInUser.username} started following you`
+      );
     } else {
       return res.status(400).json({
         message: `User already followed ${user.name}`
@@ -199,6 +237,57 @@ router.post("/unfollow/:id", authenticateToken, async (req, res) => {
   }
 });
 
+// Update Profile
+router.put("/updateProfile", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.headers;
+    const { name, username, email, avatar } = req.body;
+
+    // Check if username or email already exists (excluding current user)
+    if (username) {
+      const existingUsername = await User.findOne({
+        username,
+        _id: { $ne: id }
+      });
+      if (existingUsername) {
+        return res.status(400).json({ message: "Username already taken" });
+      }
+    }
+
+    if (email) {
+      const existingEmail = await User.findOne({
+        email,
+        _id: { $ne: id }
+      });
+      if (existingEmail) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
+    }
+
+    // Update user
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          name: name || undefined,
+          username: username || undefined,
+          email: email || undefined,
+          avatar: avatar || undefined,
+        }
+      },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    return res.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+      success: true
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+});
 
 
 
