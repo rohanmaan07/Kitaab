@@ -18,7 +18,7 @@ function Cart() {
   const handleRemoveFromCart = async (bookId) => {
     try {
       const response = await axios.put(
-        `https://kitaabrohan.onrender.com/api/v1/removeFromCart/${bookId}`,
+        `http://localhost:8080/api/v1/removeFromCart/${bookId}`,
         {},
         { headers }
       );
@@ -33,7 +33,7 @@ function Cart() {
     setLoading(true); 
     try {
       const response = await axios.get(
-        `https://kitaabrohan.onrender.com/api/v1/getUserCart`,
+        `http://localhost:8080/api/v1/getUserCart`,
         { headers }
       );
       setCartBooks(response.data.data);
@@ -59,7 +59,7 @@ const handlePayment = async (amount) => {
     // Convert amount to smallest currency unit if it’s in INR (paisa)
     const paymentAmount = typeof amount === "number" ? amount * 100 : 10000; // Default to 100 INR if amount is invalid
 
-    const response = await axios.post("https://kitaabrohan.onrender.com/api/v1/order", {
+    const response = await axios.post("http://localhost:8080/api/v1/order", {
       amount: paymentAmount
     });
 
@@ -74,7 +74,7 @@ const handlePayment = async (amount) => {
       name: "Rohan Mandal",
       description: "Tutorial of RazorPay",
       order_id: order.id,
-      callback_url: "https://kitaabrohan.onrender.com/api/v1/verify",
+      callback_url: "http://localhost:8080/api/v1/verify",
       prefill: {
         name: "Rohan Mandal",
         email: "rohanmandal@example.com",
@@ -109,77 +109,36 @@ const handlePayment = async (amount) => {
   }
 };
 
- const handlePlaceOrder = async () => {
-    if (cartBooks.length === 0) {
-      alert(
-        "Your cart is empty. Please add books to your cart before placing an order."
-      );
-      return;
-    }
-
+  const handlePlaceOrderAfterPayment = async () => {
     try {
       const response = await axios.post(
-        `https://kitaabrohan.onrender.com/api/v1/placeOrder`,
+        `http://localhost:8080/api/v1/placeOrder`,
         { order: cartBooks },
         { headers }
       );
 
-      alert(response.data.message);
-
-      // Clear cart in state
+      toast.success(response.data.message);
       setCartBooks([]);
       setTotalAmount(0);
-
       navigate("/profile/orderHistory");
     } catch (error) {
       console.error("Error placing order:", error);
-      alert("Failed to place order. Please try again later.");
+      toast.error("Failed to place order. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
-  const handlePaymentVerify = (data) => {
-    const options = {
-      key: "rzp_test_1XTzzNAKB6IQ6n",
-      amount: data.amount,
-      currency: data.currency,
-      name: "Devknus",
-      description: "Book Purchase",
-      order_id: data.id,
-      handler: async (response) => {
-        try {
-          const res = await fetch(
-            `https://kitaabrohan.onrender.com/api/payment/verify`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature
-              })
-            }
-          );
 
-          const verifyData = await res.json();
+  const handlePlaceOrder = async () => {
+    if (cartBooks.length === 0) {
+      toast.warning("Your cart is empty. Please add books to your cart before placing an order.");
+      return;
+    }
 
-          if (verifyData.message) {
-            toast.success(verifyData.message);
-            setCartBooks([]); 
-            setTotalAmount(0);
-            navigate("/profile/orderHistory");
-          }
-        } catch (error) {
-          console.log("Error during payment verification:", error);
-        }
-      },
-      theme: {
-        color: "#5f63b8"
-      }
-    };
-    const rzp1 = new window.Razorpay(options);
-    rzp1.open();
+    // Trigger payment first
+    await handlePayment(totalAmount);
   };
+
 
   useEffect(() => {
     fetchCartBooks();
