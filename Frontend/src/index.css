@@ -11,3 +11,28 @@
 .custom-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
+
+/* Custom Scrollbar for visible areas */
+.custom-scrollbar-visible::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar-visible::-webkit-scrollbar-track {
+  background: #15202B;
+}
+
+.custom-scrollbar-visible::-webkit-scrollbar-thumb {
+  background: #38444d;
+  border-radius: 4px;
+}
+
+.custom-scrollbar-visible::-webkit-scrollbar-thumb:hover {
+  background: #8899a6;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
