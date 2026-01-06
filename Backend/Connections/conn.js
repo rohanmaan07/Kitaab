@@ -3,8 +3,6 @@ const uri = process.env.ATLAS_DB;
 async function main() {
   try {
     await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       connectTimeoutMS: 30000,
       socketTimeoutMS: 45000,
     });
