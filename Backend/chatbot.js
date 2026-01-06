@@ -1,87 +1,77 @@
-const axios = require("axios");
+const Groq = require("groq-sdk");
 const NodeCache = require("node-cache");
 const cache = new NodeCache({ stdTTL: 60 * 60 * 24 });
 const systemPrompt = require("./systemPrompt");
 const rohanPoetry = require("./rohanPoetry.json");
 
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
+
 async function chatWithBot(userMsg, id) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error("GEMINI_API_KEY is not set");
-
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-
-  // Fetch existing chat history from cache
-  let history = cache.get(id) || [];
-
-  // Add the new user message
-  history.push({
-    role: "user",
-    parts: [{ text: userMsg }],
-  });
-
-  // Pick a random poem sample
-  const randomPoem =
-    rohanPoetry.poems[Math.floor(Math.random() * rohanPoetry.poems.length)].content;
-
-  // Combine system + poem + conversation history into a SINGLE structured message
-  const finalHistory = [
-    {
-      role: "user",
-      parts: [
-        {
-          text: `${systemPrompt}
-
-Poetry Style Sample:
-${randomPoem}
-
-Here is the conversation so far:
-${history
-  .map((msg) => `${msg.role.toUpperCase()}: ${msg.parts[0].text}`)
-  .join("\n")}
-
-User: ${userMsg}`,
-        },
-      ],
-    },
-  ];
-
-  const payload = {
-    contents: finalHistory,
-  };
-
   try {
-    const response = await axios.post(apiUrl, payload);
-
-    const candidate = response.data.candidates?.[0];
-    if (!candidate) return "Sorry, main is waqt reply generate nahi kar pa raha.";
-
-    const parts = candidate.content?.parts || [];
-    let botReply = "";
-
-    for (const part of parts) {
-      if (part.text) botReply += part.text + " ";
+    // Get or create session data
+    let sessionData = cache.get(id) || { messages: [] };
+    
+    // Pick a random poem sample for this session if not already there
+    if (!sessionData.randomPoem) {
+      sessionData.randomPoem =
+        rohanPoetry.poems[
+          Math.floor(Math.random() * rohanPoetry.poems.length)
+        ].content;
     }
 
-    botReply = botReply.trim();
+    // Build messages array for Groq
+    const messages = [
+      {
+        role: "system",
+        content: `${systemPrompt}\n\nPoetry Style Sample:\n${sessionData.randomPoem}`,
+      },
+    ];
 
-    if (botReply) {
-      history.push({
-        role: "model",
-        parts: [{ text: botReply }],
+    // Add conversation history
+    if (sessionData.messages.length > 0) {
+      sessionData.messages.forEach((msg) => {
+        messages.push({
+          role: msg.role === "User" ? "user" : "assistant",
+          content: msg.content,
+        });
       });
-
-      cache.set(id, history);
     }
+
+    // Add current user message
+    messages.push({
+      role: "user",
+      content: userMsg,
+    });
+
+    // Call Groq API
+    const chatCompletion = await groq.chat.completions.create({
+      messages: messages,
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.7,
+      max_tokens: 500,
+    });
+
+    const botReply = chatCompletion.choices[0]?.message?.content || "Sorry, koi response nahi mila.";
+
+    // Update session history
+    sessionData.messages.push({ role: "User", content: userMsg });
+    sessionData.messages.push({ role: "Bot", content: botReply });
+    
+    // Keep only last 10 exchanges (20 messages)
+    if (sessionData.messages.length > 20) {
+      sessionData.messages = sessionData.messages.slice(-20);
+    }
+    
+    cache.set(id, sessionData);
 
     return botReply;
   } catch (error) {
-    console.error(
-      "Gemini API ERROR:",
-      error.response?.data || error.message
-    );
-
+    console.error("Groq API ERROR:", error.message);
     throw new Error("Something went wrong while communicating with the bot.");
   }
 }
 
 module.exports = { chatWithBot };
+
