@@ -20,9 +20,9 @@ function Sidebar({ data }) {
     <div className="p-6 rounded-lg flex flex-col items-center justify-between lg:h-[88vh] bg-black bg-opacity-90 backdrop-blur-lg shadow-lg  w-full text-white border border-gray-700 overflow-hidden   ">
       <div className="flex items-center flex-col justify-center mb-10 ">
         <img
-          src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src={data.avatar || `https://ui-avatars.com/api/?name=${data.username}&background=E50914&color=fff&bold=true`}
           alt="User Avatar"
-          className="h-[2v0h] w-[23vh] rounded-full shadow-lg mb-4 transition-transform duration-500 hover:scale-105"
+          className="h-[20vh] w-[20vh] rounded-full shadow-lg mb-4 transition-transform duration-500 hover:scale-105 object-cover border-4 border-[#E50914]"
         />
         <p className="text-sm font-bold text-white ">{data.username}</p>
         <p className="text-sm text-gray-400">{data.email}</p>
@@ -54,35 +54,47 @@ function Sidebar({ data }) {
               </span>
             </div>
           </Link>
+
+          <Link
+            to={`/user/${data._id}`}
+            className="group flex items-center justify-between w-full py-4 px-5 text-white font-semibold rounded-lg transition-all duration-300 bg-gradient-to-r from-gray-800 to-gray-900 hover:bg-red-600 hover:shadow-lg transform hover:scale-105"
+          >
+            <div className="flex items-center">
+              <AiOutlineSetting className="mr-3 text-2xl text-red-500 group-hover:text-white transition duration-300" />
+              <span className="text-white group-hover:text-white transition duration-300">
+                My Profile
+              </span>
+            </div>
+          </Link>
         </div>
       )}
-      
-      {role==="admin" && (
-         <div className="flex flex-col items-center w-full space-y-4 mb-auto">
-         <Link
-           to="/profile"
-           className="group flex items-center justify-between w-full py-4 px-5 text-white font-semibold rounded-lg transition-all duration-300 bg-gradient-to-r from-gray-800 to-gray-900 hover:bg-red-600 hover:shadow-lg transform hover:scale-105"
-         >
-           <div className="flex items-center">
-             <MdBorderColor className="mr-3 text-2xl text-red-500 group-hover:text-white transition duration-300" />
-             <span className="text-white group-hover:text-white transition duration-300">
-               All Orders
-             </span>
-           </div>
-         </Link>
 
-         <Link
-           to="/profile/addBook"
-           className="group flex items-center justify-between w-full py-4 px-5 text-white font-semibold rounded-lg transition-all duration-300 bg-gradient-to-r from-gray-800 to-gray-900 hover:bg-red-600 hover:shadow-lg transform hover:scale-105"
-         >
-           <div className="flex items-center">
-             <FaBook className="mr-3 text-2xl text-red-500 group-hover:text-white transition duration-300" />
-             <span className="text-white group-hover:text-white transition duration-300">
-               Add Book
-             </span>
-           </div>
-         </Link>
-       </div>
+      {role === "admin" && (
+        <div className="flex flex-col items-center w-full space-y-4 mb-auto">
+          <Link
+            to="/profile"
+            className="group flex items-center justify-between w-full py-4 px-5 text-white font-semibold rounded-lg transition-all duration-300 bg-gradient-to-r from-gray-800 to-gray-900 hover:bg-red-600 hover:shadow-lg transform hover:scale-105"
+          >
+            <div className="flex items-center">
+              <MdBorderColor className="mr-3 text-2xl text-red-500 group-hover:text-white transition duration-300" />
+              <span className="text-white group-hover:text-white transition duration-300">
+                All Orders
+              </span>
+            </div>
+          </Link>
+
+          <Link
+            to="/profile/addBook"
+            className="group flex items-center justify-between w-full py-4 px-5 text-white font-semibold rounded-lg transition-all duration-300 bg-gradient-to-r from-gray-800 to-gray-900 hover:bg-red-600 hover:shadow-lg transform hover:scale-105"
+          >
+            <div className="flex items-center">
+              <FaBook className="mr-3 text-2xl text-red-500 group-hover:text-white transition duration-300" />
+              <span className="text-white group-hover:text-white transition duration-300">
+                Add Book
+              </span>
+            </div>
+          </Link>
+        </div>
       )}
       <div className="w-full mt-10">
         <button
