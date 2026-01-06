@@ -32,7 +32,7 @@ function UpdateBook() {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `https://kitaabrohan.onrender.com/api/v1/updateBook`,
+        `http://localhost:8080/api/v1/updateBook`,
         formData,
         { headers }
       );
@@ -51,7 +51,7 @@ function UpdateBook() {
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
-        const response = await axios.get(`https://kitaabrohan.onrender.com/api/v1/getBookDetails/${id}`, { headers });
+        const response = await axios.get(`http://localhost:8080/api/v1/getBookDetails/${id}`, { headers });
         setFormData(response.data.data); 
         console.log("Fetched Data:", response.data.data); 
       } catch (error) {
