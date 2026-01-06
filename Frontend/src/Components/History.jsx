@@ -16,7 +16,7 @@ function History() {
   const fetchOrderHistory = async () => {
     try {
       const response = await axios.get(
-        `https://kitaabrohan.onrender.com/api/v1/getOrderHistory`,
+        `http://localhost:8080/api/v1/getOrderHistory`,
         { headers }
       );
 
