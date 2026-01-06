@@ -150,4 +150,19 @@ router.get("/getBookDetails/:id",async(req,res)=>{
 }
 })
 
+// Get books by category
+router.get("/getBooksByCategory/:category", async (req, res) => {
+  try {
+    const { category } = req.params;
+    const books = await Book.find({ category: category }).sort({ createdAt: -1 });
+    return res.json({
+      status: "Success",
+      data: books,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

@@ -62,7 +62,7 @@ router.post("/signin", async (req, res) => {
           { name: existinguser.username },
           { role: existinguser.role },
         ];
-        const token = jwt.sign({ authClaim }, "rohan123");
+        const token = jwt.sign({ id: existinguser._id, authClaim }, "rohan123");
         res.status(200).json({
           id: existinguser._id,
           role: existinguser.role,
@@ -126,9 +126,9 @@ router.get("/bookmarked-tweets", authenticateToken, async (req, res) => {
   try {
     const { id } = req.headers;
     const Tweet = require("../Models/tweet");
-    
+
     const user = await User.findById(id);
-    
+
     // Get all bookmarked tweets
     const bookmarkedTweets = await Tweet.find({
       _id: { $in: user.bookmarks }
@@ -147,7 +147,24 @@ router.get("/bookmarked-tweets", authenticateToken, async (req, res) => {
 router.get("/profile/:id", authenticateToken, async (req, res) => {
   try {
     const id = req.params.id;
+
+    // Validate ObjectId
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID format"
+      });
+    }
+
     const user = await User.findById(id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
     return res.status(200).json({
       user,
     });
@@ -160,6 +177,15 @@ router.get("/profile/:id", authenticateToken, async (req, res) => {
 router.get("/otheruser/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Validate ObjectId
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID format"
+      });
+    }
+
     const otherUsers = await User.find({ _id: { $ne: id } }).select("-password");
 
     if (!otherUsers.length) {
@@ -187,7 +213,7 @@ router.post("/follow/:id", authenticateToken, async (req, res) => {
     if (!user.followers.includes(loggedInUserId)) {
       await user.updateOne({ $push: { followers: loggedInUserId } });
       await loggedInUser.updateOne({ $push: { following: userId } });
-      
+
       // Create notification
       await createNotification(
         userId,
@@ -289,6 +315,73 @@ router.put("/updateProfile", authenticateToken, async (req, res) => {
   }
 });
 
+// Get Popular Shayars
+router.get("/user/popular-shayars", async (req, res) => {
+  try {
+    const Tweet = require("../Models/tweet");
 
+    // Get all users with their tweet counts and follower counts
+    const users = await User.find().select("-password").lean();
+
+    if (!users || users.length === 0) {
+      return res.status(200).json({
+        shayars: [],
+        success: true,
+        message: "No shayars found. Please run the seed script."
+      });
+    }
+
+    // Get tweet counts for each user
+    const usersWithStats = await Promise.all(
+      users.map(async (user) => {
+        const tweetsCount = await Tweet.countDocuments({ userId: user._id });
+
+        // Get a random top shayari from user's tweets
+        const tweets = await Tweet.find({ userId: user._id }).limit(10).sort({ createdAt: -1 });
+        const topShayari = tweets.length > 0
+          ? tweets[Math.floor(Math.random() * Math.min(tweets.length, 5))].description
+          : user.bio || "Dil se nikalti hai jo baat, asar rakhti hai";
+
+        const bio = user.bio || (tweets.length > 0 ? tweets[0].description.split('\n')[0] : "Words that touch the soul");
+
+        return {
+          _id: user._id,
+          name: user.name,
+          username: `@${user.username}`,
+          avatar: user.avatar,
+          bio: bio.length > 80 ? bio.substring(0, 80) + "..." : bio,
+          followersCount: user.followers?.length || 0,
+          tweetsCount: tweetsCount,
+          isFollowing: false,
+          topShayari: topShayari.length > 150
+            ? topShayari.substring(0, 150) + "..."
+            : topShayari
+        };
+      })
+    );
+
+    // Filter users with at least some activity
+    const activeShayars = usersWithStats.filter(
+      user => user.tweetsCount > 0 || user.followersCount > 0
+    );
+
+    // Sort by followers and tweets, get top 8
+    const popularShayars = (activeShayars.length > 0 ? activeShayars : usersWithStats)
+      .sort((a, b) => {
+        const scoreA = (a.followersCount * 2) + a.tweetsCount;
+        const scoreB = (b.followersCount * 2) + b.tweetsCount;
+        return scoreB - scoreA;
+      })
+      .slice(0, 8);
+
+    return res.status(200).json({
+      shayars: popularShayars,
+      success: true
+    });
+  } catch (error) {
+    console.error("Error fetching popular shayars:", error);
+    res.status(500).json({ success: false, message: "Server Error", error: error.message });
+  }
+});
 
 module.exports = router;
