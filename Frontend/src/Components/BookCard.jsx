@@ -10,7 +10,7 @@ function BookCard({ data, fav }) {
   const handleremove = async () => {
     try {
       const response = await axios.put(
-        `https://kitaabrohan.onrender.com/api/v1/removeBookFav`,
+        `http://localhost:8080/api/v1/removeBookFav`,
         { bookId: data._id }, 
         { headers }
       );
