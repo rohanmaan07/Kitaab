@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const http = require("http");
+const { Server } = require("socket.io");
 const path = require("path");
 const cors = require("cors");
 const User = require("./Routes/user");
@@ -11,10 +13,26 @@ const Tweet = require("./Routes/tweet");
 const Bot = require("./Routes/bot");
 const Notification = require("./Routes/notification");
 const Payment = require("./Routes/payment");
+const Message = require("./Routes/message");
 const main = require("./Connections/conn");
+const { initializeSocket } = require("./socket");
 require("dotenv").config();
 
-const _dirname = path.resolve();
+// Create HTTP server and Socket.io instance
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+        credentials: true,
+    },
+});
+
+// Initialize Socket.io
+initializeSocket(io);
+
+// Make io accessible to routes
+app.set("io", io);
 
 main()
     .then(() => {
@@ -38,9 +56,10 @@ app.use("/api/v1", Tweet);
 app.use("/api/v1", Bot);
 app.use("/api/v1", Payment);
 app.use("/api/v1/notifications", Notification);
+app.use("/api/v1", Message);
 
 // Serve static files from Frontend
-const frontendPath = path.join(_dirname, "Frontend", "dist");
+const frontendPath = path.join(__dirname, "..", "Frontend", "dist");
 app.use(express.static(frontendPath));
 app.get('*', (_, res) => {
     res.sendFile(path.resolve(frontendPath, "index.html"));
@@ -53,6 +72,7 @@ app.use((err, req, res, next) => {
 });
 
 // Server listening
-app.listen(8080, () => {
-    console.log(`Server is listening on port..`);
+server.listen(8080, () => {
+    console.log(`Server is listening on port 8080..`);
+    console.log(`Socket.io is ready for real-time messaging`);
 });
