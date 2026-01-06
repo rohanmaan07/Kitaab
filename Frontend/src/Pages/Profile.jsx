@@ -5,7 +5,7 @@ import axios from "axios";
 import { Loader } from "../Components/Loader";
 
 function Profile() {
-  const [profile, setProfile] = useState(null); 
+  const [profile, setProfile] = useState(null);
   const headers = {
     id: localStorage.getItem("id"),
     authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -14,7 +14,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`https://kitaabrohan.onrender.com/api/v1/userInfo`, { headers });
+        const response = await axios.get(`http://localhost:8080/api/v1/userInfo`, { headers });
         setProfile(response.data);
       } catch (error) {
         console.error("Failed to fetch profile data:", error);
@@ -24,11 +24,11 @@ function Profile() {
     fetchProfile();
   }, []);
 
-  
+
   return (
-    <div className="px-2 md:px-12 flex flex-col md:flex-row  py-8 gap-4 text-white">
+    <div className="px-2 md:px-12 flex flex-col md:flex-row py-8 gap-4 text-white pt-20">
       {!profile ? (
-        <Loader /> 
+        <Loader />
       ) : (
         <>
           <div className="w-full md:w-1/6 ">

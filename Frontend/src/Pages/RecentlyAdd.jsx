@@ -12,7 +12,7 @@ function RecentlyAdd() {
     const fetchBooks = async () => {
       try {
         const response = await axios.get(
-          `https://kitaabrohan.onrender.com/api/v1/getAllBookRecently`
+          `http://localhost:8080/api/v1/getAllBookRecently`
         );
         setData(response.data.data);
         console.log(response.data.data);
@@ -28,9 +28,17 @@ function RecentlyAdd() {
   }, []);
 
   return (
-    <>
-      <div className="mt-8 px-4">
-        <h1 className="text-white text-2xl mb-4 ">Recently Added</h1>
+    <section className="bg-black py-16 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+            Recently Added Books
+          </h2>
+          <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">
+            Explore our latest collection of literary treasures
+          </p>
+        </div>
 
         {/* Loader */}
         {loading && <Loader />} 
@@ -45,14 +53,14 @@ function RecentlyAdd() {
 
         {/* Books Grid */}
         {!loading && data.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 container mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {data.map((items, i) => (
               <BookCard key={i} data={items} />
             ))}
           </div>
         )}
       </div>
-    </>
+    </section>
   );
 }
 

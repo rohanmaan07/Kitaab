@@ -1,4 +1,6 @@
 import RecentlyAdd from "./RecentlyAdd";
+import PopularShayars from "../Components/PopularShayars";
+import BookCategories from "../Components/BookCategories";
 
 function Home() {
     return (
@@ -21,12 +23,16 @@ function Home() {
             </a>
           </div>
   
-          <div className="h-[621px] w-full md:w-screen bg-cover" style={{ backgroundImage: "url('/kitab.png')" }}></div>
+          <div className="h-[621px] mt-20 w-full md:w-screen bg-cover" style={{ backgroundImage: "url('/kitab.png')" }}></div>
         </div>
+        
+        <PopularShayars />
         <RecentlyAdd/>
+        <BookCategories />
       </>
     );
   }
   
   export default Home;
   
+4

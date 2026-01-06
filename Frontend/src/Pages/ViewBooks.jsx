@@ -19,14 +19,14 @@ function ViewBooks() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(`https://kitaabrohan.onrender.com/api/v1/getBookDetails/${id}`);
+        const response = await axios.get(`http://localhost:8080/api/v1/getBookDetails/${id}`);
         setData(response.data.data);
         setIsFavorited(response.data.isFavorited);
         setIsInCart(response.data.isInCart);
       } catch (err) {
         setError("Error fetching book details");
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -41,7 +41,7 @@ function ViewBooks() {
 
   const handleFav = async () => {
     try {
-      const response = await axios.put(`https://kitaabrohan.onrender.com/api/v1/addBookFav`, {}, { headers });
+      const response = await axios.put(`http://localhost:8080/api/v1/addBookFav`, {}, { headers });
       alert(response.data.message);
       setIsFavorited(!isFavorited);
     } catch (err) {
@@ -51,7 +51,7 @@ function ViewBooks() {
 
   const handleCart = async () => {
     try {
-      const response = await axios.put(`https://kitaabrohan.onrender.com/api/v1/addToCart`, {}, { headers });
+      const response = await axios.put(`http://localhost:8080/api/v1/addToCart`, {}, { headers });
       alert(response.data.message);
       setIsInCart(!isInCart);
     } catch (err) {
@@ -60,7 +60,7 @@ function ViewBooks() {
   };
 
   const deleteBook = async () => {
-    const response = await axios.delete(`https://kitaabrohan.onrender.com/api/v1/deleteBook`, { headers });
+    const response = await axios.delete(`http://localhost:8080/api/v1/deleteBook`, { headers });
     alert(response.data.message);
     navigate("/all-books");
   };
@@ -75,82 +75,132 @@ function ViewBooks() {
   if (!data) return <div>Book not found</div>;
 
   return (
-    <div className="flex justify-center items-center h-auto bg-black text-white mx-auto">
-      <div className="flex flex-col md:flex-row w-full max-w-4xl mx-auto rounded-lg shadow-lg p-4 space-y-8 md:space-y-0 md:space-x-8 overflow-hidden">
-        {/* Left Side - Book Image and Icons */}
-        <div className="w-full md:w-1/2 flex justify-center items-center relative">
-          <img
-            src={data.url}
-            alt={data.tittle}
-            className="w-full h-auto object-cover rounded-lg shadow-md"
-          />
-          {/* Icon Container */}
-          {isLoggedIn && (
-            <div className="absolute top-4 right-4 flex space-x-2">
-              {role === "user" && (
-                <>
-                  <button
-                    onClick={handleFav}
-                    className={`bg-black rounded-full p-2 transition duration-300 ${isFavorited ? "bg-[#E50914]" : "hover:bg-[#E50914]"}`}
-                  >
-                    <AiOutlineHeart className="text-3xl text-white" />
-                  </button>
-                  <button
-                    onClick={handleCart}
-                    className={`bg-black rounded-full p-2 transition duration-300 ${isInCart ? "bg-[#E50914]" : "hover:bg-[#E50914]"}`}
-                  >
-                    <AiOutlineShoppingCart className="text-3xl text-white" />
-                  </button>
-                </>
-              )}
-              {role === "admin" && (
-                <>
-                  <Link to={`/updateBook/${id}`} className="bg-black rounded-full p-2 hover:bg-[#E50914] transition duration-300">
-                    <AiOutlineEdit className="text-3xl text-white" />
-                  </Link>
-                  <button
-                    onClick={deleteBook}
-                    className="bg-black rounded-full p-2 hover:bg-[#E50914] transition duration-300"
-                  >
-                    <AiOutlineDelete className="text-3xl text-white" />
-                  </button>
-                </>
+    <div className="min-h-screen bg-black text-white pt-24 pb-16 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Left Side - Book Image */}
+          <div className="relative group">
+            <div className="relative overflow-hidden rounded-2xl shadow-2xl bg-zinc-900 p-8">
+              <div className="flex items-center justify-center h-[450px]">
+                <img
+                  src={data.url}
+                  alt={data.tittle}
+                  className="max-h-[450px] max-w-full w-auto h-auto object-contain rounded-xl transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+              
+              {/* Action Buttons Overlay */}
+              {isLoggedIn && (
+                <div className="absolute top-6 right-6 flex flex-col gap-3">
+                  {role === "user" && (
+                    <>
+                      <button
+                        onClick={handleFav}
+                        className={`${isFavorited ? "bg-[#E50914]" : "bg-black/80 hover:bg-[#E50914]"} backdrop-blur-sm rounded-full p-3 transition-all duration-300 transform hover:scale-110 shadow-lg`}
+                        title={isFavorited ? "Remove from Favorites" : "Add to Favorites"}
+                      >
+                        <AiOutlineHeart className="text-2xl text-white" />
+                      </button>
+                      <button
+                        onClick={handleCart}
+                        className={`${isInCart ? "bg-[#E50914]" : "bg-black/80 hover:bg-[#E50914]"} backdrop-blur-sm rounded-full p-3 transition-all duration-300 transform hover:scale-110 shadow-lg`}
+                        title={isInCart ? "In Cart" : "Add to Cart"}
+                      >
+                        <AiOutlineShoppingCart className="text-2xl text-white" />
+                      </button>
+                    </>
+                  )}
+                  {role === "admin" && (
+                    <>
+                      <Link
+                        to={`/updateBook/${id}`}
+                        className="bg-blue-600 hover:bg-blue-700 backdrop-blur-sm rounded-full p-3 transition-all duration-300 transform hover:scale-110 shadow-lg"
+                        title="Edit Book"
+                      >
+                        <AiOutlineEdit className="text-2xl text-white" />
+                      </Link>
+                      <button
+                        onClick={deleteBook}
+                        className="bg-red-600 hover:bg-red-700 backdrop-blur-sm rounded-full p-3 transition-all duration-300 transform hover:scale-110 shadow-lg"
+                        title="Delete Book"
+                      >
+                        <AiOutlineDelete className="text-2xl text-white" />
+                      </button>
+                    </>
+                  )}
+                </div>
               )}
             </div>
-          )}
-        </div>
-
-        <div className="w-full md:w-1/2 flex flex-col justify-between space-y-6">
-          <h1 className="text-3xl md:text-4xl font-semibold text-[#E50914] mb-4 leading-tight tracking-wide">
-            {data.tittle}
-          </h1>
-
-          <p className="text-lg">
-            <span className="text-[#E50914]">Author: </span>
-            <span className="text-gray-300">{data.author}</span>
-          </p>
-
-          <p className="text-lg">
-            <span className="text-[#E50914]">Price: </span>
-            <span className="text-gray-300">₹ {data.price}</span>
-          </p>
-
-          <p className="text-lg">
-            <span className="text-[#E50914]">Language: </span>
-            <span className="text-gray-300">{data.language}</span>
-          </p>
-
-          <div className="text-lg leading-relaxed text-gray-400 border-t border-gray-700 pt-4">
-            <h2 className="text-xl md:text-2xl text-[#E50914] mb-2">Description</h2>
-            <p>{data.description}</p>
           </div>
 
-          <button
-            onClick={() => window.history.back()}
-            className="bg-black text-white py-2 px-4 rounded-lg border border-[#E50914] hover:bg-[#E50914] hover:text-white transition duration-300 mt-4"
-          >
-            Go Back
-          </button>
+          {/* Right Side - Book Details */}
+          <div className="flex flex-col justify-center space-y-6">
+            {/* Title */}
+            <div className="space-y-2">
+              <h1 className="text-4xl md:text-5xl font-semibold text-white leading-tight">
+                {data.tittle}
+              </h1>
+              <div className="h-1 w-20 bg-[#E50914] rounded-full"></div>
+            </div>
+
+            {/* Info Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+              {/* Author Card */}
+              <div className="bg-zinc-900 rounded-lg p-4 border border-zinc-800 hover:border-[#E50914] transition-all duration-300">
+                <p className="text-sm text-gray-500 mb-1">Author</p>
+                <p className="text-lg text-white">{data.author}</p>
+              </div>
+
+              {/* Price Card */}
+              <div className="bg-zinc-900 rounded-lg p-4 border border-zinc-800 hover:border-[#E50914] transition-all duration-300">
+                <p className="text-sm text-gray-500 mb-1">Price</p>
+                <p className="text-xl font-medium text-[#E50914]">₹ {data.price}</p>
+              </div>
+
+              {/* Language Card */}
+              <div className="bg-zinc-900 rounded-lg p-4 border border-zinc-800 hover:border-[#E50914] transition-all duration-300">
+                <p className="text-sm text-gray-500 mb-1">Language</p>
+                <p className="text-lg text-white">{data.language}</p>
+              </div>
+
+              {/* Category Card */}
+              {data.category && (
+                <div className="bg-zinc-900 rounded-lg p-4 border border-zinc-800 hover:border-[#E50914] transition-all duration-300">
+                  <p className="text-sm text-gray-500 mb-1">Category</p>
+                  <p className="text-lg text-white">{data.category}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Description */}
+            <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800 mt-6">
+              <h2 className="text-xl text-[#E50914] mb-3">
+                Description
+              </h2>
+              <p className="text-gray-300 leading-relaxed">
+                {data.description}
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-4 pt-4">
+              <button
+                onClick={() => window.history.back()}
+                className="flex-1 bg-zinc-900 text-white py-3 px-6 rounded-lg font-medium border border-zinc-800 hover:border-[#E50914] hover:bg-zinc-800 transition-all duration-300"
+              >
+                Go Back
+              </button>
+              
+              {isLoggedIn && role === "user" && (
+                <button
+                  onClick={handleCart}
+                  className="flex-1 bg-[#E50914] text-white py-3 px-6 rounded-lg font-medium hover:bg-red-700 transition-all duration-300"
+                >
+                  {isInCart ? "In Cart" : "Add to Cart"}
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

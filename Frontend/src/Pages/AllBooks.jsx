@@ -10,7 +10,7 @@ function AllBooks() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(`https://kitaabrohan.onrender.com/api/v1/getAllBook`);
+        const response = await axios.get(`http://localhost:8080/api/v1/getAllBook`);
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching books:", error);
@@ -24,7 +24,7 @@ function AllBooks() {
 
   return (
     <>
-      <div className="mt-8 px-4 h-auto">
+      <div className="pt-20 px-4 h-auto">
         <h1 className="text-white text-2xl mb-4 ">All Books</h1>
 
         {loading ? (  // Use loading state to show loader
