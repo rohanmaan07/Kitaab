@@ -25,7 +25,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://kitaabrohan.onrender.com/api/v1/signin",
+        "http://localhost:8080/api/v1/signin",
         formData
       );
       console.log(response.data);
@@ -38,6 +38,9 @@ function Login() {
       // Dispatch auth actions
       dispatch(authActions.login());
       dispatch(authActions.changeRole(response.data.role));
+      if (response.data.user) {
+        dispatch(authActions.setUser(response.data.user));
+      }
 
       // Navigate to home page
       navigate("/");
