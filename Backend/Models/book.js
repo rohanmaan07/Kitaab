@@ -25,6 +25,11 @@ const BookSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    category: {
+        type: String,
+        required: true,
+        enum: ['Ghazal', 'Nazm', 'Romantic Poetry', 'Modern Poetry', 'Sufi Poetry', 'Revolutionary Poetry', 'Best Sellers']
+    },
     
 }, { timestamps: true });  
 
