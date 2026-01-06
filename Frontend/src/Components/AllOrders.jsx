@@ -16,7 +16,7 @@ function AllOrders() {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `https://kitaabrohan.onrender.com/api/v1/get-all-orders`,
+          `http://localhost:8080/api/v1/get-all-orders`,
           { headers }
         );
         setOrders(response.data.data);
@@ -33,7 +33,7 @@ function AllOrders() {
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
       const response = await axios.put(
-      `https://kitaabrohan.onrender.com/api/v1/update-status/${orderId}`,
+      `http://localhost:8080/api/v1/update-status/${orderId}`,
         { status: newStatus },
         { headers }
       );
