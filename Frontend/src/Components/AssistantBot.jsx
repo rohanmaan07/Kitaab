@@ -37,7 +37,7 @@ const SparkleIcon = ({ className = "w-4 h-4" }) => (
 const AssistantBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { sender: "bot", text: "Namaskar! 🙏 Main Kitaab Poetry Assistant hoon.\nKuch shayari sunein ya koi sawal poochein?" },
+    { sender: "bot", text: "Namaskar!  Main Kitaab Poetry Assistant hoon.\nKuch shayari sunein ya koi sawal poochein?" },
   ]);
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
