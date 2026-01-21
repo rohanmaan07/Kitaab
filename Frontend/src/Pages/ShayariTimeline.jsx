@@ -15,14 +15,14 @@ function ShayariTimeline() {
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
 
-  // Generate avatar URL with fallback
-  const userAvatar = user?.avatar || `https://ui-avatars.com/api/?name=${user?.username || "User"}&background=E50914&color=fff`;
+  const userAvatar =
+    user?.avatar ||
+    `https://ui-avatars.com/api/?name=${user?.username || "User"}&background=E50914&color=fff`;
 
-  // Check for compose parameter in URL
   useEffect(() => {
-    if (searchParams.get('compose') === 'true') {
+    if (searchParams.get("compose") === "true") {
       setShowCreateTweet(true);
-      // Remove the parameter from URL
+
       setSearchParams({});
     }
   }, [searchParams, setSearchParams]);
@@ -48,34 +48,28 @@ function ShayariTimeline() {
 
   const handleTweetCreated = () => {
     setShowCreateTweet(false);
-    setSearchParams({}); // Clear URL parameters
+    setSearchParams({});
     setActiveTab(activeTab === "all" ? "following" : "all");
     setTimeout(() => setActiveTab("all"), 100);
   };
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Three Column Layout - Only for Timeline */}
       <div className="max-w-[1280px] mx-auto flex relative">
-        {/* Left Sidebar - Desktop Only */}
         <aside className="hidden lg:block w-[250px] fixed h-screen left-0 top-16 border-r border-zinc-800 overflow-y-auto custom-scrollbar bg-black">
           <LeftSidebar />
         </aside>
 
-        {/* Center Content Area */}
         <main className="flex-1 min-h-screen border-x border-zinc-800 lg:ml-[250px] lg:mr-[350px] mt-16">
           <div className="max-w-[600px] mx-auto">
-            {/* Header */}
             <div className="border-b border-zinc-800 p-4 bg-black sticky top-16 z-20">
-              <h1 className="text-2xl font-bold text-white">
-                Poetry Timeline
-              </h1>
+              <h1 className="text-2xl font-bold text-white">Poetry Timeline</h1>
               <p className="text-gray-400 text-sm flex items-center gap-1">
-                Express your heart through words <AiOutlineHeart className="text-[#E50914]" />
+                Express your heart through words{" "}
+                <AiOutlineHeart className="text-[#E50914]" />
               </p>
             </div>
 
-            {/* Create Tweet Section */}
             <div className="border-b border-zinc-800 p-4 bg-black">
               {showCreateTweet ? (
                 <CreateTweet
@@ -95,19 +89,21 @@ function ShayariTimeline() {
                     alt="Profile"
                     className="w-10 h-10 rounded-full object-cover border-2 border-[#E50914]"
                   />
-                  <span className="text-gray-400 text-lg">What's happening?</span>
+                  <span className="text-gray-400 text-lg">
+                    What's happening?
+                  </span>
                 </button>
               )}
             </div>
 
-            {/* Tabs */}
             <div className="flex border-b border-zinc-800 bg-black sticky top-16 z-10">
               <button
                 onClick={() => setActiveTab("all")}
-                className={`flex-1 px-6 py-4 font-semibold transition relative ${activeTab === "all"
-                  ? "text-white"
-                  : "text-gray-400 hover:text-white hover:bg-zinc-900"
-                  }`}
+                className={`flex-1 px-6 py-4 font-semibold transition relative ${
+                  activeTab === "all"
+                    ? "text-white"
+                    : "text-gray-400 hover:text-white hover:bg-zinc-900"
+                }`}
               >
                 For You
                 {activeTab === "all" && (
@@ -116,10 +112,11 @@ function ShayariTimeline() {
               </button>
               <button
                 onClick={() => setActiveTab("following")}
-                className={`flex-1 px-6 py-4 font-semibold transition relative ${activeTab === "following"
-                  ? "text-white"
-                  : "text-gray-400 hover:text-white hover:bg-zinc-900"
-                  }`}
+                className={`flex-1 px-6 py-4 font-semibold transition relative ${
+                  activeTab === "following"
+                    ? "text-white"
+                    : "text-gray-400 hover:text-white hover:bg-zinc-900"
+                }`}
               >
                 Following
                 {activeTab === "following" && (
@@ -128,14 +125,12 @@ function ShayariTimeline() {
               </button>
             </div>
 
-            {/* Tweet Feed */}
             <div className="pb-20 lg:pb-0">
               <TweetFeed feedType={activeTab} />
             </div>
           </div>
         </main>
 
-        {/* Right Sidebar - Desktop Only */}
         <aside className="hidden xl:block w-[350px] fixed h-screen right-0 top-16 overflow-y-auto custom-scrollbar bg-black">
           <RightSidebar />
         </aside>
