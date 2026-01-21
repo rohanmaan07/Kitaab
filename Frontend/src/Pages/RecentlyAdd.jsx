@@ -5,14 +5,14 @@ import { Loader } from "../Components/Loader";
 
 function RecentlyAdd() {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/v1/getAllBookRecently`
+          `http://localhost:8080/api/v1/getAllBookRecently`,
         );
         setData(response.data.data);
         console.log(response.data.data);
@@ -20,7 +20,7 @@ function RecentlyAdd() {
         console.error("Error fetching recently added books:", error.message);
         setError("Failed to fetch books. Please try again later.");
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -30,7 +30,6 @@ function RecentlyAdd() {
   return (
     <section className="bg-black py-16 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
             Recently Added Books
@@ -40,18 +39,16 @@ function RecentlyAdd() {
           </p>
         </div>
 
-        {/* Loader */}
-        {loading && <Loader />} 
-        
-        {/* Error Message */}
-        {error && <p className="text-red-500 text-center">{error}</p>} 
+        {loading && <Loader />}
 
-        {/* No Data Message */}
+        {error && <p className="text-red-500 text-center">{error}</p>}
+
         {!loading && data.length === 0 && !error && (
-          <p className="text-gray-500 text-center">No books have been recently added.</p>
+          <p className="text-gray-500 text-center">
+            No books have been recently added.
+          </p>
         )}
 
-        {/* Books Grid */}
         {!loading && data.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {data.map((items, i) => (
