@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32" height="32">
+  <!-- Left book spine -->
+  <rect x="40" y="100" width="20" height="150" fill="#D97E3A" rx="4"/>
+  
+  <!-- Right book spine -->
+  <rect x="452" y="100" width="20" height="150" fill="#D97E3A" rx="4"/>
+  
+  <!-- Left page (light gray) -->
+  <path d="M 60 100 L 150 60 L 150 220 L 60 250 Z" fill="#E8E8E8" stroke="#1a1a1a" stroke-width="8" stroke-linejoin="round"/>
+  
+  <!-- Center pages (white) -->
+  <path d="M 256 50 L 350 100 L 350 250 L 256 300 Z" fill="white" stroke="#1a1a1a" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M 256 50 L 162 100 L 162 250 L 256 300 Z" fill="white" stroke="#1a1a1a" stroke-width="8" stroke-linejoin="round"/>
+  
+  <!-- Right page (light gray) -->
+  <path d="M 452 100 L 362 60 L 362 220 L 452 250 Z" fill="#E8E8E8" stroke="#1a1a1a" stroke-width="8" stroke-linejoin="round"/>
+  
+  <!-- Left green line -->
+  <line x1="80" y1="240" x2="180" y2="280" stroke="#2ECC71" stroke-width="12" stroke-linecap="round"/>
+  
+  <!-- Right green line -->
+  <line x1="432" y1="240" x2="332" y2="280" stroke="#2ECC71" stroke-width="12" stroke-linecap="round"/>
+  
+  <!-- Left orange line (crossing) -->
+  <line x1="100" y1="300" x2="220" y2="340" stroke="#D97E3A" stroke-width="12" stroke-linecap="round"/>
+  
+  <!-- Right orange line (crossing) -->
+  <line x1="412" y1="300" x2="292" y2="340" stroke="#D97E3A" stroke-width="12" stroke-linecap="round"/>
+  
+  <!-- Center vertical line -->
+  <line x1="256" y1="50" x2="256" y2="350" stroke="#1a1a1a" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Red bookmark at bottom -->
+  <rect x="246" y="340" width="20" height="30" fill="#E50914" rx="3"/>
+</svg>
