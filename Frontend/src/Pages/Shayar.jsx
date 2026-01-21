@@ -87,14 +87,14 @@ const Shayar = () => {
       title: "Mai aadhi raat ko",
       content: 'Mai aadhi raat ko pankhee ko dekhtaa rhta hu...',
       author: "~rohannn...",
-      imageUrl: 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?w=800&q=80'
+      imageUrl: 'https://images.unsplash.com/photo-1479090793912-eb9929f4fdb2?q=80&w=968&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
       id: '7',
       title: "जिस्मानी सुकून",
       content: 'जिस्मानी सुकून को वो हमनवा समझ बैठी है, उसे मारा जाए।',
       author: "~rohannn...",
-      imageUrl: 'https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?w=800&q=80'
+      imageUrl: 'https://images.unsplash.com/photo-1490814525860-594e82bfd34a?q=80&w=895&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
       id: '8',
@@ -108,21 +108,21 @@ const Shayar = () => {
       title: "Uski dhundlii yaadein",
       content: 'Uski dhundlii yaadein yhi khi pdi hai kisii Kone mein...💭',
       author: "~rohannn...",
-      imageUrl: 'https://images.unsplash.com/photo-1494887205043-c5f291293cf6?w=800&q=80'
+      imageUrl: 'https://images.unsplash.com/photo-1535332371349-a5d229f49cb5?q=80&w=765&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
       id: '10',
       title: "मैं उसकी आदतें",
       content: 'मैं उसकी आदतें अपनी आदतों में ढालना चाहता हूं...🫶🏻',
       author: "~rohannn...",
-      imageUrl: 'https://images.unsplash.com/photo-1464820453369-31d2c0b651af?w=800&q=80'
+      imageUrl: 'https://images.unsplash.com/photo-1532767153582-b1a0e5145009?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
       id: '11',
       title: "Agar wo kitaabo se",
       content: 'Agar wo kitaabo se gazle pdhne lgi, toh tera kya hoga..',
       author: "~rohannn...",
-      imageUrl: 'https://images.unsplash.com/photo-1520034475321-cbe63696469a?w=800&q=80'
+      imageUrl: 'https://images.unsplash.com/photo-1499578124509-1611b77778c8?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
       id: '12',
@@ -136,21 +136,21 @@ const Shayar = () => {
       title: "Wo khawaab to nahi..",
       content: 'Mai to nafsiyaat hu, kahi wo khwaab to nahi..',
       author: "~rohannn...",
-      imageUrl: 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?w=800&q=80'
+      imageUrl: 'https://plus.unsplash.com/premium_photo-1721092495875-7541d6cd58e6?q=80&w=1228&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
       id: '14',
       title: 'Nikaah karna..',
       content: 'मेरे इख्तियार में नहीं तुम्हे भूल पाना "rohannnn"...',
       author: "~rohannn...",
-      imageUrl: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=800&q=80'
+      imageUrl: 'https://images.unsplash.com/photo-1542042161784-26ab9e041e89?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
       id: '15',
       title: "Tum toh maahirr ho",
       content: 'Bhot farak hai mohabbat aur tawaif k samne Rone mein...',
       author: "~rohannn...",
-      imageUrl: 'https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?w=800&q=80'
+      imageUrl: 'https://images.unsplash.com/photo-1662428484703-9c786790d35f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
       id: '16',
@@ -171,14 +171,14 @@ const Shayar = () => {
       title: "Saja-e-mohabbat..",
       content: 'aaj wo kisi aur ki dulhan bn gyii...',
       author: "~rohannn...",
-      imageUrl: 'https://images.unsplash.com/photo-1494887205043-c5f291293cf6?w=800&q=80'
+      imageUrl: 'https://images.unsplash.com/photo-1677044964081-3d4b2125d649?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
   ];
 
   return (
     <div className="min-h-screen bg-black text-white pt-24 pb-16 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+     
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-semibold text-white mb-3">
             Shayari Collection
@@ -189,7 +189,6 @@ const Shayar = () => {
           <div className="h-1 w-24 bg-[#E50914] rounded-full"></div>
         </div>
 
-        {/* Shayari Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {shayaris.map((shayari, index) => (
             <ShayariCard
