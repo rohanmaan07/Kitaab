@@ -201,13 +201,12 @@ const AssistantBot = () => {
       {!isOpen && (
         <button
           onClick={toggleOpen}
-          className="fixed bottom-7 right-7 w-[72px] h-[72px] bg-gradient-to-br from-[#E50914] via-[#c4070f] to-[#8a0509] rounded-full flex items-center justify-center text-white shadow-[0_10px_40px_rgba(229,9,20,0.4)] hover:shadow-[0_15px_60px_rgba(229,9,20,0.6)] hover:scale-110 active:scale-95 transition-all duration-500 z-50 border-[3px] border-white/20 group animate-float"
+          className="fixed bottom-7 right-7 w-[72px] h-[72px] bg-[#E50914] rounded-full flex items-center justify-center text-white shadow-[0_10px_40px_rgba(229,9,20,0.4)] hover:shadow-[0_15px_60px_rgba(229,9,20,0.6)] hover:scale-110 active:scale-95 transition-all duration-500 z-50 border-[3px] border-white/20 group animate-float"
         >
           <BotIcon className="w-10 h-10 group-hover:scale-110 transition-transform duration-300" />
-          <div className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-gradient-to-br from-green-400 to-green-600 rounded-full border-3 border-[#0a0c10] animate-pulse-slow shadow-lg shadow-green-500/50">
-            <div className="absolute inset-0 bg-green-400 rounded-full animate-ping opacity-75"></div>
+          <div className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-green-500 rounded-full border-[3px] border-[#0a0c10] animate-pulse-slow shadow-lg shadow-green-500/50">
+            <div className="absolute inset-0 bg-green-500 rounded-full opacity-40 animate-ping"></div>
           </div>
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#E50914] to-[#8a0509] opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500"></div>
         </button>
       )}
 
