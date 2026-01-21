@@ -90,7 +90,7 @@ function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="relative">
-              <i className="fas fa-book text-[#E50914] text-2xl group-hover:scale-110 transition-transform duration-200"></i>
+              <i className="fas fa-book text-white text-2xl group-hover:text-[#E50914]  scale-110 transition-transform duration-200"></i>
               <div className="absolute inset-0 bg-[#E50914] blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
             </div>
             <h1 className="text-white text-xl sm:text-2xl font-bold tracking-tight group-hover:text-[#E50914] transition-colors duration-200">
