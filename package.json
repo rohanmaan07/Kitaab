@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon Backend/app.js",
-    "build": "npm install && npm install --prefix Frontend && npm run build --prefix Frontend",
-    "start": "node Backend/app.js",
+    "build": "cd Backend && npm install && cd ../Frontend && npm install && npm run build",
+    "start": "cd Backend && npm install && node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
