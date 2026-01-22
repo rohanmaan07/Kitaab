@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import  BookCard  from "./BookCard";
+import BookCard from "./BookCard";
+import { getApiUrl } from "../config/api";
 import { Link } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
 
 function Favourite() {
   const [fav, setFav] = useState([]);
-  
+
   const headers = {
     id: localStorage.getItem("id"),
     authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -15,7 +16,7 @@ function Favourite() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/v1/getFavouriteBooks`, { headers });
+        const response = await axios.get(getApiUrl("getFavouriteBooks"), { headers });
         setFav(response.data.data);
       } catch (error) {
         console.error("Failed to fetch favourite books:", error);
@@ -31,7 +32,7 @@ function Favourite() {
         <h1 className="text-3xl font-semibold text-white mb-2">My Favourites</h1>
         <div className="h-1 w-20 bg-[#E50914] rounded-full"></div>
       </div>
-      
+
       {fav && fav.length === 0 ? (
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-12 flex flex-col items-center justify-center min-h-[400px]">
           <div className="bg-zinc-800 rounded-full p-6 mb-6">
