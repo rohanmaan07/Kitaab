@@ -1,18 +1,20 @@
 import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Loader } from "./Loader"; 
+import { toast } from "react-toastify";
+import { getApiUrl } from "../config/api";
+import { Loader } from "./Loader";
 
 function AddBook() {
   const [formData, setFormData] = useState({
     url: null,
-    tittle: "", 
+    tittle: "",
     author: "",
     price: "",
     description: "",
     language: "",
   });
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const headers = {
@@ -38,7 +40,7 @@ function AddBook() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); 
+    setLoading(true);
     const formDataToSend = new FormData();
     for (const key in formData) {
       formDataToSend.append(key, formData[key]);
@@ -46,7 +48,7 @@ function AddBook() {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/v1/addBook`,
+        getApiUrl("addBook"),
         formDataToSend,
         { headers }
       );
@@ -59,7 +61,7 @@ function AddBook() {
         setError("An error occurred while adding the book. Please try again.");
       }
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -68,7 +70,7 @@ function AddBook() {
       <div className="w-full bg-gray-900 p-8 rounded-lg shadow-lg">
         <h1 className="text-xl font-bold text-center mb-2 text-white">Add Book</h1>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        
+
         {loading ? (
           <Loader /> // Show loader while loading is true
         ) : (
