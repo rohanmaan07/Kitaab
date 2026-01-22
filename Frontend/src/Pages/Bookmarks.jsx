@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import TweetCard from "../Components/TweetCard";
 import { Loader } from "../Components/Loader";
+import TweetCard from "../Components/TweetCard";
+import { getApiUrl } from "../config/api";
 import { BsBookmarkFill } from "react-icons/bs";
 import LeftSidebar from "../Components/LeftSidebar";
 import RightSidebar from "../Components/RightSidebar";
@@ -35,7 +36,7 @@ function Bookmarks() {
 
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/bookmarked-tweets",
+        getApiUrl("bookmarked-tweets"),
         { headers }
       );
 
