@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { SOCKET_URL } from '../config/api';
 
 const SocketContext = createContext();
 
@@ -13,16 +14,12 @@ export const SocketProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     const userId = localStorage.getItem("id");
 
-    if (token && userId) {
-      console.log("Initializing socket connection with fresh token");
-      
-      const newSocket = io("http://localhost:8080", {
-        auth: {
-          token: token,
-        },
+    if (userId) {
+      const newSocket = io(SOCKET_URL, {
+        query: { userId },
+        transports: ['websocket', 'polling'],
         reconnection: true,
         reconnectionDelay: 1000,
         reconnectionAttempts: 5,
@@ -37,6 +34,7 @@ export const SocketProvider = ({ children }) => {
       newSocket.on("disconnect", () => {
         console.log("Socket disconnected!");
         setIsConnected(false);
+        setSocket(null);
       });
 
       newSocket.on("connect_error", (error) => {
@@ -54,10 +52,18 @@ export const SocketProvider = ({ children }) => {
 
       return () => {
         console.log("Cleaning up socket connection");
-        newSocket.close();
+        try {
+          newSocket.off();
+          newSocket.close();
+        } catch (e) {
+          // ignore
+        }
+        setIsConnected(false);
+        setSocket(null);
       };
     } else {
       console.log("No token or userId found, skipping socket connection");
+      setIsConnected(false);
     }
   }, []); // Empty dependency - only run once on mount
 
