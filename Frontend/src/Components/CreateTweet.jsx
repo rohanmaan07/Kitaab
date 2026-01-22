@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { AiOutlineClose, AiOutlineFileImage, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { BsImageFill } from "react-icons/bs";
+import { getApiUrl } from "../config/api";
 
 function CreateTweet({ onTweetCreated, onClose }) {
   const [description, setDescription] = useState("");
@@ -79,7 +80,7 @@ function CreateTweet({ onTweetCreated, onClose }) {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/create",
+        getApiUrl("create"),
         {
           description: description,
           id: localStorage.getItem("id"),
