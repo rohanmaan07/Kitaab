@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { getApiUrl } from "../config/api";
 
 // --- SVG ICONS ---
 const BotIcon = ({ className = "w-9 h-9" }) => (
@@ -64,7 +65,7 @@ const AssistantBot = () => {
     setIsLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:8080/api/v1/bot/chat", {
+      const res = await axios.post(getApiUrl("bot/chat"), {
         id: sessionIdRef.current,
         message: text,
       });
