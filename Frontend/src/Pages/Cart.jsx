@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Loader } from "../Components/Loader";
+import { getApiUrl, API_BASE_URL } from "../config/api";
 
 function Cart() {
   const [cartBooks, setCartBooks] = useState([]);
@@ -18,7 +19,7 @@ function Cart() {
   const handleRemoveFromCart = async (bookId) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/v1/removeFromCart/${bookId}`,
+        getApiUrl(`removeFromCart/${bookId}`),
         {},
         { headers }
       );
@@ -33,7 +34,7 @@ function Cart() {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/getUserCart`,
+        getApiUrl("getUserCart"),
         { headers }
       );
       setCartBooks(response.data.data);
@@ -59,7 +60,7 @@ function Cart() {
       // Convert amount to smallest currency unit if it’s in INR (paisa)
       const paymentAmount = typeof amount === "number" ? amount * 100 : 10000; // Default to 100 INR if amount is invalid
 
-      const response = await axios.post("http://localhost:8080/api/v1/order", {
+      const response = await axios.post(getApiUrl("order"), {
         amount: paymentAmount
       });
 
@@ -74,7 +75,7 @@ function Cart() {
         name: "Kitaab - Book Store",
         description: "Book Purchase Payment",
         order_id: order.id,
-        callback_url: "http://localhost:8080/api/v1/verify",
+        callback_url: `${API_BASE_URL}/api/v1/verify`,
         prefill: {
           name: "Rohan Mandal",
           email: "rohanmandal@example.com",
@@ -112,7 +113,7 @@ function Cart() {
   const handlePlaceOrderAfterPayment = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/v1/placeOrder`,
+        getApiUrl("placeOrder"),
         { order: cartBooks },
         { headers }
       );
@@ -154,7 +155,7 @@ function Cart() {
         </div>
 
         {loading && <Loader />}
-        
+
         {!loading && cartBooks.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[60vh]">
             <svg
@@ -230,7 +231,7 @@ function Cart() {
               <div className="lg:col-span-1">
                 <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 sticky top-24">
                   <h2 className="text-2xl font-semibold text-white mb-6">Order Summary</h2>
-                  
+
                   <div className="space-y-4 mb-6">
                     <div className="flex justify-between text-gray-400">
                       <span>Items ({cartBooks.length})</span>
