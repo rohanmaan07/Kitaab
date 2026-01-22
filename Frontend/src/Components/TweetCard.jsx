@@ -3,6 +3,7 @@ import { AiOutlineHeart, AiFillHeart, AiOutlineDelete, AiOutlineEye } from "reac
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { getApiUrl } from "../config/api";
 
 function TweetCard({ tweet, onDelete, onLike, onBookmarkChange, currentUserId }) {
   const [isLiked, setIsLiked] = useState(
@@ -24,7 +25,7 @@ function TweetCard({ tweet, onDelete, onLike, onBookmarkChange, currentUserId })
   const checkBookmarkStatus = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/userInfo",
+        getApiUrl("userInfo"),
         { headers }
       );
       setIsBookmarked(response.data.bookmarks?.includes(tweet._id) || false);
@@ -37,7 +38,7 @@ function TweetCard({ tweet, onDelete, onLike, onBookmarkChange, currentUserId })
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/v1/like/${tweet._id}`,
+        getApiUrl(`like/${tweet._id}`),
         { id: currentUserId },
         { headers }
       );
@@ -56,7 +57,7 @@ function TweetCard({ tweet, onDelete, onLike, onBookmarkChange, currentUserId })
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/v1/bookmark/${tweet._id}`,
+        getApiUrl(`bookmark/${tweet._id}`),
         { id: currentUserId },
         { headers }
       );
@@ -78,7 +79,7 @@ function TweetCard({ tweet, onDelete, onLike, onBookmarkChange, currentUserId })
     if (window.confirm("Are you sure you want to delete this poetry?")) {
       try {
         await axios.delete(
-          `http://localhost:8080/api/v1/delete/${tweet._id}`,
+          getApiUrl(`delete/${tweet._id}`),
           { headers }
         );
         alert("Poetry deleted successfully!");
