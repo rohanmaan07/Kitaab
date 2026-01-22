@@ -1,4 +1,30 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment files (NEVER commit these!)
 .env
-node_modules
+.env.local
+.env.development
+.env.production
+Backend/.env
+Frontend/.env
+*.env
+
+# Build outputs
+dist/
+build/
+*/dist/
+*/build/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation (if needed to ignore)
 FINAL_RESUME_POINTS.md
 RESUME_POINTS_ANALYSIS.md
