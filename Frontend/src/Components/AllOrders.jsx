@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
-import { Loader } from "./Loader"; 
+import { Loader } from "./Loader";
+import { FaUser, FaBoxOpen } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { getApiUrl } from "../config/api";
 
 function AllOrders() {
   const [orders, setOrders] = useState([]);
@@ -16,7 +18,7 @@ function AllOrders() {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/v1/get-all-orders`,
+          getApiUrl("get-all-orders"),
           { headers }
         );
         setOrders(response.data.data);
@@ -33,7 +35,7 @@ function AllOrders() {
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
       const response = await axios.put(
-      `http://localhost:8080/api/v1/update-status/${orderId}`,
+        getApiUrl(`update-status/${orderId}`),
         { status: newStatus },
         { headers }
       );
