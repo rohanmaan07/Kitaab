@@ -1,6 +1,8 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getApiUrl } from "../config/api";
 
 function UpdateBook() {
   const { id } = useParams(); // Get the book ID from the URL parameters
@@ -21,10 +23,10 @@ function UpdateBook() {
     bookid: id,
   };
 
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({...formData,[name]: value,});
+    setFormData({ ...formData, [name]: value, });
     console.log("Updated Form Data:", { ...formData, [name]: value }); // Log formData on change
   };
 
@@ -32,7 +34,7 @@ function UpdateBook() {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/v1/updateBook`,
+        getApiUrl("updateBook"),
         formData,
         { headers }
       );
@@ -47,13 +49,13 @@ function UpdateBook() {
       }
     }
   };
-  
+
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/v1/getBookDetails/${id}`, { headers });
-        setFormData(response.data.data); 
-        console.log("Fetched Data:", response.data.data); 
+        const response = await axios.get(getApiUrl(`getBookDetails/${id}`), { headers });
+        setFormData(response.data.data);
+        console.log("Fetched Data:", response.data.data);
       } catch (error) {
         setError("Error fetching book details.");
       }
@@ -89,9 +91,9 @@ function UpdateBook() {
             </label>
             <input
               type="text"
-              id="tittle" 
-              name="tittle" 
-              value={formData.tittle} 
+              id="tittle"
+              name="tittle"
+              value={formData.tittle}
               onChange={handleChange}
               className="w-full p-2 mt-2 bg-gray-200 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#E50914]"
               required
@@ -124,7 +126,7 @@ function UpdateBook() {
               required
             />
           </div>
-          
+
           <div className="mt-1 flex gap-4">
             <div className="w-1/2">
               <label htmlFor="price" className="block text-lg text-white mt-3">
