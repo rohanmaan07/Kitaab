@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { AiOutlineClose, AiOutlineCamera, AiOutlineLoading3Quarters } from "react-icons/ai";
+import { getApiUrl } from "../config/api";
 
 function EditProfileModal({ user, onClose, onUpdate }) {
     const [formData, setFormData] = useState({
@@ -70,7 +71,7 @@ function EditProfileModal({ user, onClose, onUpdate }) {
             };
 
             const response = await axios.put(
-                `http://localhost:8080/api/v1/updateProfile`,
+                getApiUrl("updateProfile"),
                 updateData,
                 { headers }
             );
