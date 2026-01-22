@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { getApiUrl } from "../config/api";
 
 function BookCard({ data, fav }) {
   const headers = {
@@ -10,8 +11,8 @@ function BookCard({ data, fav }) {
   const handleremove = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/v1/removeBookFav`,
-        { bookId: data._id }, 
+        getApiUrl("removeBookFav"),
+        { bookId: data._id },
         { headers }
       );
       if (response.status === 200) {
@@ -47,7 +48,7 @@ function BookCard({ data, fav }) {
       </Link>
 
       {fav && (
-        
+
         <button
           onClick={handleremove}
           className="bg-[#E50914] w-full text-white px-4 py-2 rounded hover:bg-opacity-90 transition duration-300 mt-4"
