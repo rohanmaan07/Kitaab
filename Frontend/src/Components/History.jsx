@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader } from "./Loader";
 import { Link } from "react-router-dom";
+import { getApiUrl } from "../config/api";
 
 function History() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const headers = {
     id: localStorage.getItem("id"),
     authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -16,12 +17,12 @@ function History() {
   const fetchOrderHistory = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/getOrderHistory`,
+        getApiUrl("getOrderHistory"),
         { headers }
       );
 
       if (response.data.status === "success") {
-        setOrders(response.data.data); 
+        setOrders(response.data.data);
       } else {
         setError(response.data.message || "Failed to fetch order history.");
       }
