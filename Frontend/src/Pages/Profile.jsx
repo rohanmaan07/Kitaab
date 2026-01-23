@@ -3,6 +3,7 @@ import Sidebar from "../Components/Sidebar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader } from "../Components/Loader";
+import { getApiUrl } from "../config/api";
 
 function Profile() {
   const [profile, setProfile] = useState(null);
@@ -14,7 +15,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/v1/userInfo`, { headers });
+        const response = await axios.get(getApiUrl("userInfo"), { headers });
         setProfile(response.data);
       } catch (error) {
         console.error("Failed to fetch profile data:", error);
