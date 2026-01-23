@@ -3,7 +3,9 @@ import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AiOutlineHeart, AiOutlineShoppingCart, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { useSelector } from "react-redux";
-import { Loader } from "../Components/Loader"; // Assuming you have a Loader component
+import { Loader } from "../Components/Loader";
+import { GrLanguage } from "react-icons/gr";
+import { getApiUrl } from "../config/api";
 
 function ViewBooks() {
   const { id } = useParams();
@@ -19,7 +21,7 @@ function ViewBooks() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/v1/getBookDetails/${id}`);
+        const response = await axios.get(getApiUrl(`getBookDetails/${id}`));
         setData(response.data.data);
         setIsFavorited(response.data.isFavorited);
         setIsInCart(response.data.isInCart);
@@ -41,7 +43,7 @@ function ViewBooks() {
 
   const handleFav = async () => {
     try {
-      const response = await axios.put(`http://localhost:8080/api/v1/addBookFav`, {}, { headers });
+      const response = await axios.put(getApiUrl("addBookFav"), {}, { headers });
       alert(response.data.message);
       setIsFavorited(!isFavorited);
     } catch (err) {
@@ -51,7 +53,7 @@ function ViewBooks() {
 
   const handleCart = async () => {
     try {
-      const response = await axios.put(`http://localhost:8080/api/v1/addToCart`, {}, { headers });
+      const response = await axios.put(getApiUrl("addToCart"), {}, { headers });
       alert(response.data.message);
       setIsInCart(!isInCart);
     } catch (err) {
@@ -60,7 +62,7 @@ function ViewBooks() {
   };
 
   const deleteBook = async () => {
-    const response = await axios.delete(`http://localhost:8080/api/v1/deleteBook`, { headers });
+    const response = await axios.delete(getApiUrl("deleteBook"), { headers });
     alert(response.data.message);
     navigate("/all-books");
   };
@@ -88,7 +90,7 @@ function ViewBooks() {
                   className="max-h-[450px] max-w-full w-auto h-auto object-contain rounded-xl transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
-              
+
               {/* Action Buttons Overlay */}
               {isLoggedIn && (
                 <div className="absolute top-6 right-6 flex flex-col gap-3">
@@ -190,7 +192,7 @@ function ViewBooks() {
               >
                 Go Back
               </button>
-              
+
               {isLoggedIn && role === "user" && (
                 <button
                   onClick={handleCart}
