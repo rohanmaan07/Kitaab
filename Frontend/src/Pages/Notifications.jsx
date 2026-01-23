@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Loader } from "../Components/Loader";
+import { getApiUrl } from "../config/api";
 import {
   AiFillHeart,
   AiOutlineUser,
@@ -46,7 +47,7 @@ function Notifications() {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/notifications/all",
+        getApiUrl("notifications/all"),
         { headers }
       );
       setNotifications(response.data.notifications);
@@ -60,7 +61,7 @@ function Notifications() {
   const fetchUnreadCount = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/notifications/unread-count",
+        getApiUrl("notifications/unread-count"),
         { headers }
       );
       setUnreadCount(response.data.count);
@@ -72,7 +73,7 @@ function Notifications() {
   const markAsRead = async (notificationId) => {
     try {
       await axios.put(
-        `http://localhost:8080/api/v1/notifications/read/${notificationId}`,
+        getApiUrl(`notifications/read/${notificationId}`),
         {},
         { headers }
       );
@@ -91,7 +92,7 @@ function Notifications() {
   const markAllAsRead = async () => {
     try {
       await axios.put(
-        "http://localhost:8080/api/v1/notifications/read-all",
+        getApiUrl("notifications/read-all"),
         {},
         { headers }
       );
@@ -106,7 +107,7 @@ function Notifications() {
   const deleteNotification = async (notificationId) => {
     try {
       await axios.delete(
-        `http://localhost:8080/api/v1/notifications/delete/${notificationId}`,
+        getApiUrl(`notifications/delete/${notificationId}`),
         { headers }
       );
 
