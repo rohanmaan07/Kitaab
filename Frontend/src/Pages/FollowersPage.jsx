@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Loader } from "../Components/Loader";
+import { getApiUrl } from "../config/api";
 
 function FollowersPage() {
   const { type } = useParams(); // "followers" or "following"
@@ -25,24 +26,24 @@ function FollowersPage() {
 
       // Get current user details
       const userResponse = await axios.get(
-        `http://localhost:8080/api/v1/userInfo`,
+        getApiUrl("userInfo"),
         { headers }
       );
       setCurrentUser(userResponse.data);
 
       // Get all users
       const allUsersResponse = await axios.get(
-        `http://localhost:8080/api/v1/otheruser/${currentUserId}`,
+        getApiUrl(`otheruser/${currentUserId}`),
         { headers }
       );
 
       const allUsers = allUsersResponse.data.otherUsers;
-      const userList = type === "followers" 
-        ? userResponse.data.followers 
+      const userList = type === "followers"
+        ? userResponse.data.followers
         : userResponse.data.following;
 
       // Filter users based on followers/following IDs
-      const filteredUsers = allUsers.filter(user => 
+      const filteredUsers = allUsers.filter(user =>
         userList?.includes(user._id)
       );
 
