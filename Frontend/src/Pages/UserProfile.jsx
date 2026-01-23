@@ -5,6 +5,7 @@ import { Loader } from "../Components/Loader";
 import TweetCard from "../Components/TweetCard";
 import EditProfileModal from "../Components/EditProfileModal";
 import { AiOutlineEdit, AiOutlineMessage } from "react-icons/ai";
+import { getApiUrl } from "../config/api";
 
 function UserProfile() {
   const { id } = useParams();
@@ -30,14 +31,14 @@ function UserProfile() {
     try {
       // Fetch user details
       const userResponse = await axios.get(
-        `http://localhost:8080/api/v1/profile/${id}`,
+        getApiUrl(`profile/${id}`),
         { headers }
       );
       setUser(userResponse.data.user);
 
       // Check if current user is following this user
       const currentUserResponse = await axios.get(
-        `http://localhost:8080/api/v1/userInfo`,
+        getApiUrl("userInfo"),
         { headers }
       );
       setIsFollowing(
@@ -46,7 +47,7 @@ function UserProfile() {
 
       // Fetch user's tweets using dedicated endpoint
       const tweetsResponse = await axios.get(
-        `http://localhost:8080/api/v1/usertweets/${id}`,
+        getApiUrl(`usertweets/${id}`),
         { headers }
       );
 
@@ -61,8 +62,8 @@ function UserProfile() {
   const handleFollow = async () => {
     try {
       const endpoint = isFollowing
-        ? `http://localhost:8080/api/v1/unfollow/${id}`
-        : `http://localhost:8080/api/v1/follow/${id}`;
+        ? getApiUrl(`unfollow/${id}`)
+        : getApiUrl(`follow/${id}`);
 
       const response = await axios.post(
         endpoint,
@@ -83,7 +84,7 @@ function UserProfile() {
     try {
       // Create or get conversation with this user
       const response = await axios.post(
-        "http://localhost:8080/api/v1/conversations/create",
+        getApiUrl("conversations/create"),
         { receiverId: id },
         { headers }
       );
