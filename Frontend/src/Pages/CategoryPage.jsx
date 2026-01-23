@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import BookCard from "../Components/BookCard";
 import { Loader } from "../Components/Loader";
+import BookCard from "../Components/BookCard";
+import { getApiUrl } from "../config/api";
 
 function CategoryPage() {
   const { category } = useParams();
@@ -24,7 +25,7 @@ function CategoryPage() {
       try {
         const formattedCategory = formatCategoryName(category);
         const response = await axios.get(
-          `http://localhost:8080/api/v1/getBooksByCategory/${encodeURIComponent(formattedCategory)}`
+          getApiUrl(`getBooksByCategory/${encodeURIComponent(formattedCategory)}`)
         );
         setData(response.data.data);
       } catch (error) {
