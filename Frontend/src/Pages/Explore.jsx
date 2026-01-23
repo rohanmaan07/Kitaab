@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Loader } from "../Components/Loader";
+import { getApiUrl } from "../config/api";
 
 function Explore() {
     const [users, setUsers] = useState([]);
@@ -25,13 +26,13 @@ function Explore() {
 
             // Fetch all other users
             const response = await axios.get(
-                `http://localhost:8080/api/v1/otheruser/${currentUserId}`,
+                getApiUrl(`otheruser/${currentUserId}`),
                 { headers }
             );
 
             // Get current user's following list
             const userResponse = await axios.get(
-                `http://localhost:8080/api/v1/userInfo`,
+                getApiUrl("userInfo"),
                 { headers }
             );
 
@@ -55,8 +56,8 @@ function Explore() {
         try {
             const isFollowing = followingStates[userId];
             const endpoint = isFollowing
-                ? `http://localhost:8080/api/v1/unfollow/${userId}`
-                : `http://localhost:8080/api/v1/follow/${userId}`;
+                ? getApiUrl(`unfollow/${userId}`)
+                : getApiUrl(`follow/${userId}`);
 
             await axios.post(endpoint, { id: headers.id }, { headers });
 
@@ -160,8 +161,8 @@ function Explore() {
                                 <button
                                     onClick={() => handleFollow(user._id)}
                                     className={`w-full py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${followingStates[user._id]
-                                            ? "bg-transparent border border-zinc-600 text-white hover:border-red-500 hover:text-red-500 hover:bg-red-500/10"
-                                            : "bg-[#E50914] text-white hover:bg-opacity-90"
+                                        ? "bg-transparent border border-zinc-600 text-white hover:border-red-500 hover:text-red-500 hover:bg-red-500/10"
+                                        : "bg-[#E50914] text-white hover:bg-opacity-90"
                                         }`}
                                 >
                                     {followingStates[user._id] ? "Following" : "Follow"}
