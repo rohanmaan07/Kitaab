@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCamera, AiOutlineLoading3Quarters } from "react-icons/ai";
+import { getApiUrl } from "../config/api";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -69,7 +70,7 @@ function SignUp() {
       };
 
       const response = await axios.post(
-        `http://localhost:8080/api/v1/signup`,
+        getApiUrl("signup"),
         signupData
       );
 
