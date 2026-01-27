@@ -19,9 +19,11 @@ export const SocketProvider = ({ children }) => {
 
     if (userId && token) {
       const newSocket = io(SOCKET_URL, {
+        auth: {
+          token  // Backend expects token in auth object
+        },
         query: {
-          userId,
-          token  // Add token for authentication
+          userId  // Keep userId in query
         },
         transports: ['websocket', 'polling'],
         reconnection: true,
