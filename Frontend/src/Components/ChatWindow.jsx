@@ -29,12 +29,12 @@ function ChatWindow({ conversation, onBack }) {
 
     messages.forEach((msg, index) => {
       const msgDate = new Date(msg.createdAt).toDateString();
-      
+
       if (!currentGroup || currentGroup.date !== msgDate) {
         currentGroup = { date: msgDate, messages: [] };
         groups.push(currentGroup);
       }
-      
+
       currentGroup.messages.push({ ...msg, index });
     });
 
@@ -91,11 +91,11 @@ function ChatWindow({ conversation, onBack }) {
 
     if (date.toDateString() === today.toDateString()) return "Today";
     if (date.toDateString() === yesterday.toDateString()) return "Yesterday";
-    
-    return date.toLocaleDateString([], { 
-      month: "short", 
-      day: "numeric", 
-      year: date.getFullYear() !== today.getFullYear() ? "numeric" : undefined 
+
+    return date.toLocaleDateString([], {
+      month: "short",
+      day: "numeric",
+      year: date.getFullYear() !== today.getFullYear() ? "numeric" : undefined
     });
   }, []);
 
@@ -193,7 +193,7 @@ function ChatWindow({ conversation, onBack }) {
                   className="w-10 h-10 rounded-full object-cover ring-2 ring-transparent group-hover:ring-gray-700 transition-all duration-200"
                 />
                 {isOnline && (
-                  <span 
+                  <span
                     className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-black rounded-full"
                     aria-label="Online"
                   />
@@ -221,7 +221,7 @@ function ChatWindow({ conversation, onBack }) {
       </header>
 
       {/* Messages Container */}
-      <main 
+      <main
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto custom-scrollbar-visible w-full"
       >
@@ -260,7 +260,7 @@ function ChatWindow({ conversation, onBack }) {
                     const isSent = msg.sender._id === currentUserId;
                     const prevMsg = msgIndex > 0 ? group.messages[msgIndex - 1] : null;
                     const nextMsg = msgIndex < group.messages.length - 1 ? group.messages[msgIndex + 1] : null;
-                    
+
                     const showAvatar = !isSent && (!prevMsg || prevMsg.sender._id !== msg.sender._id);
                     const isConsecutive = prevMsg && prevMsg.sender._id === msg.sender._id;
                     const isLastInGroup = !nextMsg || nextMsg.sender._id !== msg.sender._id;
@@ -268,9 +268,8 @@ function ChatWindow({ conversation, onBack }) {
                     return (
                       <div
                         key={msg._id}
-                        className={`flex gap-2 animate-fadeIn ${
-                          isSent ? "justify-end" : "justify-start"
-                        } ${isConsecutive ? "mt-1" : "mt-3"}`}
+                        className={`flex gap-2 animate-fadeIn ${isSent ? "justify-end" : "justify-start"
+                          } ${isConsecutive ? "mt-1" : "mt-3"}`}
                       >
                         {/* Receiver's Avatar */}
                         {!isSent && (
@@ -340,17 +339,17 @@ function ChatWindow({ conversation, onBack }) {
                 />
                 <div className="bg-[#16181C] border border-gray-800/50 rounded-[20px] rounded-bl-[4px] px-5 py-3">
                   <div className="flex gap-1">
-                    <span 
-                      className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" 
-                      style={{ animationDelay: "0ms" }} 
+                    <span
+                      className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "0ms" }}
                     />
-                    <span 
-                      className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" 
-                      style={{ animationDelay: "150ms" }} 
+                    <span
+                      className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "150ms" }}
                     />
-                    <span 
-                      className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" 
-                      style={{ animationDelay: "300ms" }} 
+                    <span
+                      className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "300ms" }}
                     />
                   </div>
                 </div>
@@ -364,9 +363,25 @@ function ChatWindow({ conversation, onBack }) {
 
       {/* Message Input */}
       <footer className="sticky bottom-0 z-10">
-        <MessageInput 
+        <MessageInput
           conversationId={conversation._id}
           onSendMessage={(message) => {
+            // Optimistic update - immediately add message to UI
+            const tempMessage = {
+              _id: `temp-${Date.now()}`, // Temporary ID
+              content: message,
+              sender: {
+                _id: currentUserId,
+                name: "You"
+              },
+              createdAt: new Date().toISOString(),
+              isRead: false
+            };
+
+            // Add to messages immediately for instant UI feedback
+            setMessages((prev) => [...prev, tempMessage]);
+
+            // Then emit to socket for actual sending
             socket?.emit("send_message", {
               conversationId: conversation._id,
               receiverId: conversation.otherUser._id,
