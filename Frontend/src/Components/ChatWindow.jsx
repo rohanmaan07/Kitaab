@@ -119,7 +119,22 @@ function ChatWindow({ conversation, onBack }) {
 
     const handleReceiveMessage = ({ conversationId, message }) => {
       if (conversationId === conversation._id) {
-        setMessages((prev) => [...prev, message]);
+        setMessages((prev) => {
+          // Check if this is replacing a temporary optimistic message
+          const hasTempMessage = prev.some(m => m._id.toString().startsWith('temp-'));
+
+          if (hasTempMessage && message.sender._id === currentUserId) {
+            // Replace the last temp message with the real one
+            return prev.map((m, index) =>
+              m._id.toString().startsWith('temp-') && index === prev.length - 1
+                ? message
+                : m
+            );
+          }
+
+          // Otherwise, just add the new message (from other user)
+          return [...prev, message];
+        });
         markMessagesAsRead();
       }
     };
