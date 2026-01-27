@@ -1,8 +1,25 @@
 import axios from 'axios';
 
+// Determine the API base URL
+// Priority: 1. Environment variable, 2. Production URL, 3. Localhost (dev fallback)
+const getBaseURL = () => {
+  // If VITE_API_URL is set in .env, use it
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+
+  // In production (built app), use the Render URL
+  if (import.meta.env.PROD) {
+    return 'https://kitaabrohan.onrender.com';
+  }
+
+  // In development, use localhost
+  return 'http://localhost:8080';
+};
+
 // Create axios instance
 const api = axios.create({
-  baseURL: (import.meta.env.VITE_API_URL || 'http://localhost:8080') + '/api/v1',
+  baseURL: getBaseURL() + '/api/v1',
 });
 
 // Request interceptor to add auth headers
