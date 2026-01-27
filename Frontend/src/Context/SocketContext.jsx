@@ -15,10 +15,14 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     const userId = localStorage.getItem("id");
+    const token = localStorage.getItem("token");
 
-    if (userId) {
+    if (userId && token) {
       const newSocket = io(SOCKET_URL, {
-        query: { userId },
+        query: {
+          userId,
+          token  // Add token for authentication
+        },
         transports: ['websocket', 'polling'],
         reconnection: true,
         reconnectionDelay: 1000,
