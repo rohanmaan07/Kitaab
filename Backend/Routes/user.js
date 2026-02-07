@@ -10,6 +10,13 @@ router.post("/signup", async (req, res) => {
   try {
     const { username, name, email, password, avatar } = req.body;
 
+ 
+    if (!username || !name || !email || !password) {
+      return res.status(400).json({
+        message: "All fields are required (username, name, email, password)."
+      });
+    }
+
     if (username.length < 1) {
       return res
         .status(400)
@@ -42,8 +49,26 @@ router.post("/signup", async (req, res) => {
     await newUser.save();
     return res.status(201).json({ message: "Signup successfully." });
   } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.error("Signup Error:", err);
+
+  
+    if (err.code === 11000) {
+      const field = Object.keys(err.keyPattern)[0];
+      return res.status(400).json({
+        message: `${field.charAt(0).toUpperCase() + field.slice(1)} already exists.`
+      });
+    }
+
+ 
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(e => e.message);
+      return res.status(400).json({ message: messages.join(', ') });
+    }
+
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
   }
 });
 
