@@ -6,6 +6,7 @@ import { getApiUrl } from "../config/api";
 
 function SignUp() {
   const [formData, setFormData] = useState({
+    name: "",
     username: "",
     email: "",
     password: "",
@@ -57,13 +58,15 @@ function SignUp() {
 
     try {
       let avatarUrl = "";
-
-      // Convert image to base64 if selected
       if (avatarFile) {
-        avatarUrl = avatarPreview; // Already in base64 format from FileReader
+        avatarUrl = avatarPreview;
+        const base64Size = (avatarUrl.length * 3) / 4;
+        if (base64Size > 2 * 1024 * 1024) {
+          alert("Encoded image is too large. Please choose a smaller image (recommended < 1.5MB).");
+          setUploading(false);
+          return;
+        }
       }
-
-      // Prepare signup data
       const signupData = {
         ...formData,
         avatar: avatarUrl || `https://ui-avatars.com/api/?name=${formData.username}&background=E50914&color=fff&bold=true`,
@@ -91,8 +94,6 @@ function SignUp() {
     <div className="flex justify-center items-center min-h-screen bg-black text-white py-8">
       <div className="w-full max-w-md bg-gray-900 p-8 rounded-lg shadow-lg">
         <h1 className="text-4xl font-bold text-center mb-8 text-white">Sign Up</h1>
-
-        {/* Profile Picture Upload */}
         <div className="flex flex-col items-center mb-6">
           <div className="relative group">
             <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#E50914] bg-zinc-800 flex items-center justify-center">
@@ -133,7 +134,19 @@ function SignUp() {
         </div>
 
         <div>
-          <label htmlFor="Username" className="block text-lg text-white">Username</label>
+          <label htmlFor="name" className="block text-lg text-white">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full p-3 mt-2 bg-gray-200 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-[#E50914]"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="Username" className="block text-lg text-white mt-3">Username</label>
           <input
             type="text"
             id="Username"
