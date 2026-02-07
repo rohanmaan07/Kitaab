@@ -18,7 +18,6 @@ const main = require("./Connections/conn");
 const { initializeSocket } = require("./socket");
 require("dotenv").config();
 
-// Create HTTP server and Socket.io instance
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
@@ -28,10 +27,8 @@ const io = new Server(server, {
     },
 });
 
-// Initialize Socket.io
 initializeSocket(io);
 
-// Make io accessible to routes
 app.set("io", io);
 
 main()
@@ -39,12 +36,14 @@ main()
         console.log("MongoDB connected successfully..");
     })
     .catch((err) => {
-        console.error("Error connecting to MongoDB:", err);
+        console.error("Error connecting to MongoDB:", err.message);
+        console.error("Server cannot start without database connection.");
+        process.exit(1); 
     });
 
 // Middleware setup
 app.use(cors());
-app.use(express.json()); // To parse JSON bodies
+app.use(express.json()); 
 
 // Routes
 app.use("/api/v1", User);
