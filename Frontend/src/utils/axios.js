@@ -10,7 +10,7 @@ const getBaseURL = () => {
 
   // In production (built app), use the Render URL
   if (import.meta.env.PROD) {
-    return 'https://kitaabrohan.onrender.com';
+    return 'https://kitaab-ezg8hhawdpebasfv.centralindia-01.azurewebsites.net';
   }
 
   // In development, use localhost

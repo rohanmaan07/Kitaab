@@ -15,9 +15,8 @@ export const getBaseURL = () => {
         // Development mode - use localhost
         return 'http://localhost:8080';
     } else {
-        // Production mode - use relative path (same origin)
-        // This works because Render serves frontend from same domain
-        return window.location.origin;
+        // Production mode - use the Azure backend URL
+        return 'https://kitaab-ezg8hhawdpebasfv.centralindia-01.azurewebsites.net';
     }
 };
 
