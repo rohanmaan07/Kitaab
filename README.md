@@ -1,8 +1,4 @@
-# 📚 Kitaab (किताब) — Beyond Just a Bookstore
-
-[![GitHub license](https://img.shields.io/github/license/rohanmaan07/Kitaab?style=for-the-badge&color=blue)](https://github.com/rohanmaan07/Kitaab/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/rohanmaan07/Kitaab?style=for-the-badge&color=gold)](https://github.com/rohanmaan07/Kitaab/stargazers)
-[![Vercel Deployment](https://img.shields.io/badge/Deployment-Vercel-black?style=for-the-badge&logo=vercel)](https://kitaab-roh.vercel.app/)
+# 📚 Kitaab (किताब)- Beyond Just a Bookstore
 
 **Kitaab** is a soulful digital ecosystem where literature meets community. It is a premium MERN stack application that serves as a high-end bookstore for Urdu and Hindi literature, seamlessly blended with a vibrant social network (Shayari Timeline) and an emotionally intelligent AI Poetry Assistant.
 
@@ -47,17 +43,17 @@
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React.js** (Vite) — High-performance UI rendering.
-- **Redux Toolkit** — Robust global state management.
-- **Tailwind CSS** — Modern, dark-themed aesthetics with glassmorphic elements.
-- **Socket.io Client** — For real-time updates and chatting.
+- **React.js** (Vite) : High-performance UI rendering.
+- **Redux Toolkit** : Robust global state management.
+- **Tailwind CSS** : Modern, dark-themed aesthetics with glassmorphic elements.
+- **Socket.io Client** : For real-time updates and chatting.
 
 ### Backend
-- **Node.js & Express.js** — Scalable API architecture.
-- **MongoDB & Mongoose** — Document-oriented data storage.
-- **JWT & Bcrypt** — Secure authentication and authorization.
-- **Cloudinary** — Optimization and storage for user avatars and book covers.
-- **Groq SDK** — Blazing fast AI inference.
+- **Node.js & Express.js** : Scalable API architecture.
+- **MongoDB & Mongoose** : Document-oriented data storage.
+- **JWT & Bcrypt** : Secure authentication and authorization.
+- **Cloudinary** : Optimization and storage for user avatars and book covers.
+- **Groq SDK** : Blazing fast AI inference.
 
 ---
 
