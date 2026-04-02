@@ -57,11 +57,8 @@ app.use("/api/v1", Payment);
 app.use("/api/v1/notifications", Notification);
 app.use("/api/v1", Message);
 
-// Serve static files from Frontend
-const frontendPath = path.join(__dirname, "..", "Frontend", "dist");
-app.use(express.static(frontendPath));
-app.get('*', (_, res) => {
-    res.sendFile(path.resolve(frontendPath, "index.html"));
+app.get("/", (req, res) => {
+  res.send("API running");
 });
 
 // Error handling middleware
