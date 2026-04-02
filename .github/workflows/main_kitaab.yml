@@ -55,11 +55,15 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_DAFAB43B2EFD403DB3102984A2E1E8ED }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_AA2603E66EDB4C5CAB7A08D93137922E }}
 
+      - name: 'Build backend only'
+        run: |
+          cd Backend
+          npm install
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'Kitaab'
+          app-name: 'kitaab'
           slot-name: 'Production'
-          package: .
-          
+          package: Backend
