@@ -10,14 +10,8 @@ export const getBaseURL = () => {
         return import.meta.env.VITE_API_URL;
     }
 
-    // Fallback: Auto-detect based on environment
-    if (import.meta.env.DEV) {
-        // Development mode - use localhost
-        return 'http://localhost:8080';
-    } else {
-        // Production mode - use the Azure backend URL
-        return 'https://kitaab-ezg8hhawdpebasfv.centralindia-01.azurewebsites.net';
-    }
+    // Fallback: Use the Azure backend URL for all environments if VITE_API_URL is missing
+    return 'https://kitaab-ezg8hhawdpebasfv.centralindia-01.azurewebsites.net';
 };
 
 // Export the base URL

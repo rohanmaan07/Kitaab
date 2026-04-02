@@ -13,8 +13,8 @@ const getBaseURL = () => {
     return 'https://kitaab-ezg8hhawdpebasfv.centralindia-01.azurewebsites.net';
   }
 
-  // In development, use localhost
-  return 'http://localhost:8080';
+  // In development, use the Azure URL
+  return 'https://kitaab-ezg8hhawdpebasfv.centralindia-01.azurewebsites.net';
 };
 
 // Create axios instance
